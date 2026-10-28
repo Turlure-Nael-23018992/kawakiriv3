@@ -1,0 +1,34 @@
+{
+  "source": {
+    "kind": "csv",
+    "path": "examples/marge"
+  },
+  "businessNeed": "Analyser la marge brute de chaque ligne de commande.",
+  "assembledFacts": [
+    {
+      "name": "marge_lignes",
+      "anchorTable": "lignes_commande",
+      "justification": "imposee par l'appelant : une ligne = un produit commande",
+      "expectedGrain": "une ligne de commande",
+      "measures": [
+        {"table": "lignes_commande", "column": "quantite", "additivity": "additive"},
+        {"table": "tarification_lignes", "column": "montant_ht", "additivity": "additive"},
+        {"table": "tarification_lignes", "column": "montant_tva", "additivity": "additive"},
+        {"table": "tarification_lignes", "column": "prix_unitaire", "additivity": "non_additive"},
+        {"table": "tarification_lignes", "column": "taux_remise", "additivity": "non_additive"},
+        {"table": "couts_achat", "column": "cout_achat", "additivity": "additive"},
+        {"table": "expeditions", "column": "cout_transport", "additivity": "additive"},
+        {"table": "expeditions", "column": "poids_kg", "additivity": "additive"},
+        {"table": "expeditions", "column": "colis_id", "additivity": "additive", "aggregation": "count", "alias": "nb_colis"},
+        {"table": "commandes", "column": "frais_port", "additivity": "additive", "allocation": "prorata:montant_ht"}
+      ],
+      "keys": [
+        {"table": "commandes", "column": "client_id"},
+        {"table": "commandes", "column": "date_commande"},
+        {"table": "commandes", "column": "canal"}
+      ]
+    }
+  ],
+  "duckDbPath": "output/marge_impose.duckdb",
+  "outputDir": "output/marge_impose"
+}

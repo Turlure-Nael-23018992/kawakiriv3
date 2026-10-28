@@ -1,0 +1,162 @@
+{
+  "tables": [
+    "clients",
+    "commandes",
+    "couts_achat",
+    "expeditions",
+    "lignes_commande",
+    "produits",
+    "stocks_journaliers",
+    "tarification_lignes"
+  ],
+  "businessNeed": "Analyser la marge brute de chaque ligne de commande : chiffre d'affaires HT, TVA, cout d'achat, couts de transport et poids expedie, ainsi que les frais de port factures au client, par client, produit, canal et date de commande.",
+  "contextType": "grossiste B2B en fournitures de bureau, ventes web, par commercial et par telephone",
+  "factTableSource": "llm_hint",
+  "factHintError": null,
+  "factHintReasoning": "Le besoin porte sur l'analyse de la marge brute au grain de la ligne de commande : CA HT, TVA, cout d'achat, couts de transport/poids expedie, et frais de port, ventile par client, produit, canal et date de commande. La table 'lignes_commande' est la table au grain le plus fin (une ligne = un produit commande dans une commande), mais les mesures financieres (montant_ht, montant_tva), les couts d'achat et les couts de transport/poids sont repartis dans des tables satellites liees par ligne_id (tarification_lignes, couts_achat, expeditions), tandis que les frais de port et le canal/date sont portes par 'commandes'. Comme le modele doit etre construit a partir d'une seule table dont chaque colonne non identifiante devient une dimension, il faut designer 'lignes_commande' comme table de faits principale car elle represente l'evenement central (une ligne de commande = produit x quantite), point de jonction naturel vers produit, commande (donc client, canal, date) et vers les mesures de cout/tarification/transport qui seront rattachees via ligne_id lors du modelage automatique.",
+  "rejectedHintTables": [],
+  "columnRolesByTable": {
+    "lignes_commande": {
+      "reasoning": "ligne_id est la clé technique unique de la ligne de commande (identifiant de la table de faits elle-même, sans rôle d'analyse) ; commande_id et produit_code sont des identifiants d'entités métier (commande et produit) qui deviendront des clés de dimension ; quantite est une mesure numérique à agréger (quantité commandée).",
+      "keyColumns": [
+        "commande_id",
+        "produit_code"
+      ],
+      "measureColumns": [
+        "quantite"
+      ],
+      "technicalColumns": [
+        "ligne_id"
+      ]
+    }
+  },
+  "columnRolesErrors": {},
+  "rejectedColumnNames": {},
+  "tokenUsage": {
+    "inputTokens": 4875,
+    "outputTokens": 911
+  },
+  "factTableHints": [
+    {
+      "tableName": "lignes_commande",
+      "justification": "Chaque ligne represente un produit commande au sein d'une commande (produit_code, quantite), ce qui correspond exactement au grain d'analyse demande pour la marge brute par client/produit/canal/date. Cette table est le pivot naturel reliant commandes (client, canal, date, frais de port), produits, et les tables de mesures financieres (tarification_lignes, couts_achat) et logistiques (expeditions) via ligne_id.",
+      "expectedGrain": "Une ligne = un produit (produit_code) commande dans une commande donnee (commande_id), avec sa quantite."
+    }
+  ],
+  "models": [
+    {
+      "factTable": "lignes_commande",
+      "starFactTable": "lignes_commande__fact",
+      "hint": "Chaque ligne represente un produit commande au sein d'une commande (produit_code, quantite), ce qui correspond exactement au grain d'analyse demande pour la marge brute par client/produit/canal/date. Cette table est le pivot naturel reliant commandes (client, canal, date, frais de port), produits, et les tables de mesures financieres (tarification_lignes, couts_achat) et logistiques (expeditions) via ligne_id.",
+      "columnRolesReasoning": "ligne_id est la clé technique unique de la ligne de commande (identifiant de la table de faits elle-même, sans rôle d'analyse) ; commande_id et produit_code sont des identifiants d'entités métier (commande et produit) qui deviendront des clés de dimension ; quantite est une mesure numérique à agréger (quantité commandée).",
+      "verdict": "ok",
+      "warnings": [],
+      "grain": {
+        "grainColumns": [
+          "commande_id",
+          "produit_code"
+        ],
+        "totalRows": 7403,
+        "distinctTuples": 7403,
+        "unknownKeyRows": 0,
+        "completingColumns": [],
+        "duplicateRows": 0,
+        "isUnique": true
+      },
+      "foreignKeys": [
+        {
+          "sourceColumn": "commande_id",
+          "targetTable": "commandes",
+          "targetColumn": "commande_id",
+          "joinSuccessRatio": 1.0,
+          "nameHint": true,
+          "ambiguous": false,
+          "alternatives": []
+        },
+        {
+          "sourceColumn": "produit_code",
+          "targetTable": "produits",
+          "targetColumn": "produit_code",
+          "joinSuccessRatio": 1.0,
+          "nameHint": true,
+          "ambiguous": false,
+          "alternatives": []
+        }
+      ],
+      "generatedDimensions": [],
+      "measures": [
+        "quantite"
+      ],
+      "degenerateColumns": [],
+      "technicalColumns": [
+        "ligne_id"
+      ],
+      "columns": [
+        {
+          "columnName": "ligne_id",
+          "inferredType": "numeric",
+          "sqlType": "BIGINT",
+          "totalCount": 7403,
+          "nullCount": 0,
+          "distinctCount": 7403,
+          "role": "technical",
+          "fallbackRole": "technical",
+          "requiresNameHint": false,
+          "reason": "exclue (LLM) : colonne technique",
+          "linkedTo": null,
+          "dimensionTable": null,
+          "initialRole": "technical",
+          "roleSource": "LLM"
+        },
+        {
+          "columnName": "commande_id",
+          "inferredType": "numeric",
+          "sqlType": "BIGINT",
+          "totalCount": 7403,
+          "nullCount": 0,
+          "distinctCount": 2400,
+          "role": "foreign_key",
+          "fallbackRole": "key_candidate",
+          "requiresNameHint": false,
+          "reason": "100% des valeurs retrouvees dans commandes.commande_id (noms concordants)",
+          "linkedTo": "commandes.commande_id",
+          "dimensionTable": null,
+          "initialRole": "key_candidate",
+          "roleSource": "LLM"
+        },
+        {
+          "columnName": "produit_code",
+          "inferredType": "string",
+          "sqlType": "VARCHAR",
+          "totalCount": 7403,
+          "nullCount": 0,
+          "distinctCount": 150,
+          "role": "foreign_key",
+          "fallbackRole": "key_candidate",
+          "requiresNameHint": false,
+          "reason": "100% des valeurs retrouvees dans produits.produit_code (noms concordants)",
+          "linkedTo": "produits.produit_code",
+          "dimensionTable": null,
+          "initialRole": "key_candidate",
+          "roleSource": "LLM"
+        },
+        {
+          "columnName": "quantite",
+          "inferredType": "numeric",
+          "sqlType": "BIGINT",
+          "totalCount": 7403,
+          "nullCount": 0,
+          "distinctCount": 40,
+          "role": "measure",
+          "fallbackRole": "measure",
+          "requiresNameHint": false,
+          "reason": "mesure (LLM)",
+          "linkedTo": null,
+          "dimensionTable": null,
+          "initialRole": "measure",
+          "roleSource": "LLM"
+        }
+      ]
+    }
+  ]
+}

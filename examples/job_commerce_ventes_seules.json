@@ -1,0 +1,10 @@
+{
+  "source": {
+    "kind": "csv",
+    "path": "examples/commerce"
+  },
+  "contextType": "enseigne de mobilier et decoration, ventes web, magasin et telephone",
+  "businessNeed": "Suivre le chiffre d'affaires et les remises par produit et par promotion.",
+  "duckDbPath": "output/commerce_ventes.duckdb",
+  "outputDir": "output/commerce_ventes"
+}

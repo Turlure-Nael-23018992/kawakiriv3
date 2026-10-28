@@ -1,0 +1,121 @@
+produit_id,reference,nom_produit,categorie,sous_categorie,marque,prix_catalogue
+201,PRD-0201,Fauteuil Verdi 1,Mobilier,Assise,Verdi,289.37
+202,PRD-0202,Bol Nordika 2,Cuisine,Art de la table,Nordika,330.79
+203,PRD-0203,Chaise Verdi 3,Mobilier,Assise,Verdi,108.8
+204,PRD-0204,Armoire Nordika 4,Mobilier,Rangement,Nordika,201.22
+205,PRD-0205,Bol Maison Lune 5,Cuisine,Art de la table,Maison Lune,195.25
+206,PRD-0206,Verre Kobo 6,Cuisine,Art de la table,Kobo,32.9
+207,PRD-0207,Tabouret Kobo 7,Mobilier,Assise,Kobo,195.76
+208,PRD-0208,Armoire Atelier B 1,Mobilier,Rangement,Atelier B,127.78
+209,PRD-0209,Bol Maison Lune 2,Cuisine,Art de la table,Maison Lune,390.25
+210,PRD-0210,Armoire Verdi 3,Mobilier,Rangement,Verdi,46.05
+211,PRD-0211,Etagere Maison Lune 4,Mobilier,Rangement,Maison Lune,182.04
+212,PRD-0212,Chaise Maison Lune 5,Mobilier,Assise,Maison Lune,378.37
+213,PRD-0213,Assiette Atelier B 6,Cuisine,Art de la table,Atelier B,326.14
+214,PRD-0214,Assiette Atelier B 7,Cuisine,Art de la table,Atelier B,201.31
+215,PRD-0215,Verre Maison Lune 1,Cuisine,Art de la table,Maison Lune,200.96
+216,PRD-0216,Armoire Kobo 2,Mobilier,Rangement,Kobo,386.81
+217,PRD-0217,Etagere Nordika 3,Mobilier,Rangement,Nordika,115.42
+218,PRD-0218,Verre Verdi 4,Cuisine,Art de la table,Verdi,7.24
+219,PRD-0219,Etagere Maison Lune 5,Mobilier,Rangement,Maison Lune,292.09
+220,PRD-0220,Tapis Kobo 6,Deco,Textile,Kobo,24.26
+221,PRD-0221,Casserole Verdi 7,Cuisine,Ustensile,Verdi,118.29
+222,PRD-0222,Rideau Maison Lune 1,Deco,Textile,Maison Lune,330.82
+223,PRD-0223,Poele Nordika 2,Cuisine,Ustensile,Nordika,159.99
+224,PRD-0224,Tapis Atelier B 3,Deco,Textile,Atelier B,242.58
+225,PRD-0225,Lampe Nordika 4,Deco,Luminaire,Nordika,58.27
+226,PRD-0226,Rideau Kobo 5,Deco,Textile,Kobo,62.98
+227,PRD-0227,Casserole Verdi 6,Cuisine,Ustensile,Verdi,130.14
+228,PRD-0228,Rideau Maison Lune 7,Deco,Textile,Maison Lune,204.9
+229,PRD-0229,Bol Verdi 1,Cuisine,Art de la table,Verdi,122.72
+230,PRD-0230,Commode Nordika 2,Mobilier,Rangement,Nordika,392.04
+231,PRD-0231,Bol Nordika 3,Cuisine,Art de la table,Nordika,240.38
+232,PRD-0232,Applique Nordika 4,Deco,Luminaire,Nordika,235.08
+233,PRD-0233,Etagere Atelier B 5,Mobilier,Rangement,Atelier B,16.5
+234,PRD-0234,Poele Nordika 6,Cuisine,Ustensile,Nordika,178.65
+235,PRD-0235,Suspension Atelier B 7,Deco,Luminaire,Atelier B,166.51
+236,PRD-0236,Bol Nordika 1,Cuisine,Art de la table,Nordika,283.49
+237,PRD-0237,Couteau Maison Lune 2,Cuisine,Ustensile,Maison Lune,399.26
+238,PRD-0238,Coussin Atelier B 3,Deco,Textile,Atelier B,186.03
+239,PRD-0239,Bol Maison Lune 4,Cuisine,Art de la table,Maison Lune,271.64
+240,PRD-0240,Bol Kobo 5,Cuisine,Art de la table,Kobo,80.14
+241,PRD-0241,Armoire Maison Lune 6,Mobilier,Rangement,Maison Lune,93.05
+242,PRD-0242,Rideau Atelier B 7,Deco,Textile,Atelier B,277.34
+243,PRD-0243,Coussin Maison Lune 1,Deco,Textile,Maison Lune,225.95
+244,PRD-0244,Verre Nordika 2,Cuisine,Art de la table,Nordika,231.1
+245,PRD-0245,Verre Maison Lune 3,Cuisine,Art de la table,Maison Lune,382.03
+246,PRD-0246,Etagere Maison Lune 4,Mobilier,Rangement,Maison Lune,382.3
+247,PRD-0247,Commode Maison Lune 5,Mobilier,Rangement,Maison Lune,299.95
+248,PRD-0248,Fauteuil Maison Lune 6,Mobilier,Assise,Maison Lune,373.48
+249,PRD-0249,Assiette Nordika 7,Cuisine,Art de la table,Nordika,247.81
+250,PRD-0250,Poele Nordika 1,Cuisine,Ustensile,Nordika,269.25
+251,PRD-0251,Couteau Atelier B 2,Cuisine,Ustensile,Atelier B,24.79
+252,PRD-0252,Rideau Kobo 3,Deco,Textile,Kobo,43.82
+253,PRD-0253,Fauteuil Atelier B 4,Mobilier,Assise,Atelier B,165.14
+254,PRD-0254,Rideau Atelier B 5,Deco,Textile,Atelier B,303.34
+255,PRD-0255,Coussin Nordika 6,Deco,Textile,Nordika,363.54
+256,PRD-0256,Fauteuil Nordika 7,Mobilier,Assise,Nordika,365.64
+257,PRD-0257,Etagere Nordika 1,Mobilier,Rangement,Nordika,398.88
+258,PRD-0258,Tapis Maison Lune 2,Deco,Textile,Maison Lune,351.19
+259,PRD-0259,Armoire Verdi 3,Mobilier,Rangement,Verdi,46.49
+260,PRD-0260,Coussin Verdi 4,Deco,Textile,Verdi,211.63
+261,PRD-0261,Commode Atelier B 5,Mobilier,Rangement,Atelier B,324.29
+262,PRD-0262,Applique Kobo 6,Deco,Luminaire,Kobo,260.72
+263,PRD-0263,Poele Maison Lune 7,Cuisine,Ustensile,Maison Lune,317.14
+264,PRD-0264,Poele Verdi 1,Cuisine,Ustensile,Verdi,343.03
+265,PRD-0265,Rideau Maison Lune 2,Deco,Textile,Maison Lune,38.35
+266,PRD-0266,Poele Atelier B 3,Cuisine,Ustensile,Atelier B,193.07
+267,PRD-0267,Tabouret Kobo 4,Mobilier,Assise,Kobo,97.27
+268,PRD-0268,Coussin Verdi 5,Deco,Textile,Verdi,290.26
+269,PRD-0269,Armoire Maison Lune 6,Mobilier,Rangement,Maison Lune,278.34
+270,PRD-0270,Tabouret Maison Lune 7,Mobilier,Assise,Maison Lune,67.25
+271,PRD-0271,Bol Nordika 1,Cuisine,Art de la table,Nordika,256.93
+272,PRD-0272,Rideau Atelier B 2,Deco,Textile,Atelier B,90.77
+273,PRD-0273,Etagere Kobo 3,Mobilier,Rangement,Kobo,300.1
+274,PRD-0274,Verre Verdi 4,Cuisine,Art de la table,Verdi,365.47
+275,PRD-0275,Poele Verdi 5,Cuisine,Ustensile,Verdi,349.76
+276,PRD-0276,Armoire Maison Lune 6,Mobilier,Rangement,Maison Lune,34.93
+277,PRD-0277,Poele Verdi 7,Cuisine,Ustensile,Verdi,361.54
+278,PRD-0278,Chaise Maison Lune 1,Mobilier,Assise,Maison Lune,342.38
+279,PRD-0279,Applique Atelier B 2,Deco,Luminaire,Atelier B,287.9
+280,PRD-0280,Applique Kobo 3,Deco,Luminaire,Kobo,324.24
+281,PRD-0281,Applique Kobo 4,Deco,Luminaire,Kobo,184.89
+282,PRD-0282,Armoire Maison Lune 5,Mobilier,Rangement,Maison Lune,290.42
+283,PRD-0283,Tapis Atelier B 6,Deco,Textile,Atelier B,233.01
+284,PRD-0284,Commode Nordika 7,Mobilier,Rangement,Nordika,218.3
+285,PRD-0285,Tabouret Nordika 1,Mobilier,Assise,Nordika,117.69
+286,PRD-0286,Fauteuil Kobo 2,Mobilier,Assise,Kobo,152.29
+287,PRD-0287,Coussin Kobo 3,Deco,Textile,Kobo,35.78
+288,PRD-0288,Couteau Maison Lune 4,Cuisine,Ustensile,Maison Lune,50.98
+289,PRD-0289,Bol Atelier B 5,Cuisine,Art de la table,Atelier B,292.23
+290,PRD-0290,Chaise Maison Lune 6,Mobilier,Assise,Maison Lune,187.35
+291,PRD-0291,Bol Kobo 7,Cuisine,Art de la table,Kobo,330.05
+292,PRD-0292,Commode Atelier B 1,Mobilier,Rangement,Atelier B,113.16
+293,PRD-0293,Poele Kobo 2,Cuisine,Ustensile,Kobo,247.51
+294,PRD-0294,Chaise Nordika 3,Mobilier,Assise,Nordika,43.96
+295,PRD-0295,Armoire Nordika 4,Mobilier,Rangement,Nordika,100.91
+296,PRD-0296,Commode Atelier B 5,Mobilier,Rangement,Atelier B,217.74
+297,PRD-0297,Fauteuil Maison Lune 6,Mobilier,Assise,Maison Lune,96.73
+298,PRD-0298,Bol Verdi 7,Cuisine,Art de la table,Verdi,309.93
+299,PRD-0299,Suspension Atelier B 1,Deco,Luminaire,Atelier B,394.34
+300,PRD-0300,Casserole Maison Lune 2,Cuisine,Ustensile,Maison Lune,112.96
+301,PRD-0301,Couteau Kobo 3,Cuisine,Ustensile,Kobo,224.12
+302,PRD-0302,Armoire Kobo 4,Mobilier,Rangement,Kobo,315.18
+303,PRD-0303,Coussin Atelier B 5,Deco,Textile,Atelier B,122.76
+304,PRD-0304,Etagere Atelier B 6,Mobilier,Rangement,Atelier B,123.09
+305,PRD-0305,Casserole Nordika 7,Cuisine,Ustensile,Nordika,226.7
+306,PRD-0306,Suspension Atelier B 1,Deco,Luminaire,Atelier B,104.98
+307,PRD-0307,Suspension Maison Lune 2,Deco,Luminaire,Maison Lune,40.62
+308,PRD-0308,Poele Maison Lune 3,Cuisine,Ustensile,Maison Lune,153.36
+309,PRD-0309,Poele Atelier B 4,Cuisine,Ustensile,Atelier B,322.64
+310,PRD-0310,Casserole Atelier B 5,Cuisine,Ustensile,Atelier B,348.31
+311,PRD-0311,Tapis Atelier B 6,Deco,Textile,Atelier B,375.12
+312,PRD-0312,Couteau Kobo 7,Cuisine,Ustensile,Kobo,366.12
+313,PRD-0313,Casserole Atelier B 1,Cuisine,Ustensile,Atelier B,222.62
+314,PRD-0314,Coussin Verdi 2,Deco,Textile,Verdi,260.89
+315,PRD-0315,Coussin Verdi 3,Deco,Textile,Verdi,353.59
+316,PRD-0316,Applique Kobo 4,Deco,Luminaire,Kobo,305.61
+317,PRD-0317,Suspension Maison Lune 5,Deco,Luminaire,Maison Lune,167.92
+318,PRD-0318,Couteau Atelier B 6,Cuisine,Ustensile,Atelier B,10.42
+319,PRD-0319,Verre Atelier B 7,Cuisine,Art de la table,Atelier B,81.69
+320,PRD-0320,Armoire Atelier B 1,Mobilier,Rangement,Atelier B,201.72

@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "kawakiriv3"
+version = "0.1.0"
+description = "Fact-first star-schema reconstruction: an LLM hint names the fact table(s) from the business need, then the fact's own columns are linked to existing tables or extracted into generated dimensions."
+requires-python = ">=3.10"
+dependencies = [
+    "duckdb",
+    "pandas",
+    "pydantic>=2",
+    "requests",
+    "clickhouse-connect",
+    "PyMySQL",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]
+
+[tool.setuptools.packages.find]
+include = ["kawakiriv3*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+# Same camelCase convention as kawakiriv2 (testSomething.py / def testSomething).
+python_files = ["test*.py"]
+python_functions = ["test*"]

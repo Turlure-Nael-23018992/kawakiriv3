@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "csv",
+    "path": "examples/jde_liens"
+  },
+  "contextType": "JD Edwards EnterpriseOne, comptabilite clients (Accounts Receivable)",
+  "businessNeed": "Analyser les creances clients : montants factures et restant dus par client, societe, centre de cout et date de facture.",
+  "linkCachePath": "output/jde_liens_link_verdicts.json",
+  "duckDbPath": "output/jde_liens.duckdb",
+  "outputDir": "output/jde_liens"
+}

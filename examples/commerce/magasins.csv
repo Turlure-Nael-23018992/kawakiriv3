@@ -1,0 +1,13 @@
+magasin_id,nom_magasin,ville,region
+1,Kawa Paris Centre,Paris,Ile-de-France
+2,Kawa Paris Sud,Paris,Ile-de-France
+3,Kawa Lyon Centre,Lyon,Auvergne-Rhone-Alpes
+4,Kawa Lyon Sud,Lyon,Auvergne-Rhone-Alpes
+5,Kawa Marseille Centre,Marseille,Provence-Alpes-Cote d'Azur
+6,Kawa Marseille Sud,Marseille,Provence-Alpes-Cote d'Azur
+7,Kawa Lille Centre,Lille,Hauts-de-France
+8,Kawa Lille Sud,Lille,Hauts-de-France
+9,Kawa Bordeaux Centre,Bordeaux,Nouvelle-Aquitaine
+10,Kawa Bordeaux Sud,Bordeaux,Nouvelle-Aquitaine
+11,Kawa Nantes Centre,Nantes,Pays de la Loire
+12,Kawa Nantes Sud,Nantes,Pays de la Loire

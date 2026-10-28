@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "csv",
+    "path": "examples/marge"
+  },
+  "businessNeed": "Analyser la marge brute de chaque ligne de commande.",
+  "factTables": ["lignes_commande"],
+  "columnHint": false,
+  "duckDbPath": "output/marge_lignes_impose.duckdb",
+  "outputDir": "output/marge_lignes_impose"
+}

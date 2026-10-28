@@ -1,0 +1,13 @@
+vente_id,date_vente,client_id,code_produit,libelle_produit,categorie,canal,quantite,montant
+1001,2024-01-05,1,P01,Chaise,Mobilier,web,2,90.00
+1002,2024-01-05,2,P02,Table,Mobilier,magasin,1,250.00
+1003,2024-01-06,1,P03,Lampe,Deco,web,3,45.50
+1004,2024-01-07,3,P01,Chaise,Mobilier,magasin,4,180.00
+1005,2024-01-07,4,P04,Tapis,Deco,web,1,120.00
+1006,2024-01-08,5,P02,Table,Mobilier,web,1,250.00
+1007,2024-01-08,2,P03,Lampe,Deco,magasin,2,30.30
+1008,2024-01-09,3,P04,Tapis,Deco,magasin,1,120.00
+1009,2024-01-09,1,P02,Table,Mobilier,web,2,500.00
+1010,2024-01-10,4,P01,Chaise,Mobilier,magasin,6,270.00
+1011,2024-01-10,5,P03,Lampe,Deco,web,1,15.15
+1012,2024-01-11,2,P04,Tapis,Deco,web,2,240.00

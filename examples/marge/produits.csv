@@ -1,0 +1,151 @@
+produit_code,libelle,famille,prix_catalogue
+SKU-0001,Enveloppes eco 1,papeterie,10.78
+SKU-0002,Cahier premium 2,papeterie,16.46
+SKU-0003,Code du travail standard 3,livres,20.45
+SKU-0004,Guide fiscal premium 4,livres,32.57
+SKU-0005,Bloc notes premium 5,papeterie,16.77
+SKU-0006,Surligneur premium 6,ecriture,6.04
+SKU-0007,Guide fiscal premium 7,livres,27.09
+SKU-0008,Intercalaires eco 8,classement,17.72
+SKU-0009,Chaise eco 9,mobilier,179.24
+SKU-0010,Intercalaires premium 10,classement,8.57
+SKU-0011,Chemise eco 11,classement,15.6
+SKU-0012,Code du travail pro 12,livres,36.06
+SKU-0013,Agenda standard 13,livres,19.7
+SKU-0014,Boite archive standard 14,classement,11.05
+SKU-0015,Crayon eco 15,ecriture,9.59
+SKU-0016,Lampe pro 16,mobilier,273.57
+SKU-0017,Post-it eco 17,papeterie,6.54
+SKU-0018,Agenda premium 18,livres,43.23
+SKU-0019,Enveloppes premium 19,papeterie,7.39
+SKU-0020,Lampe standard 20,mobilier,226.64
+SKU-0021,Bureau premium 21,mobilier,106.73
+SKU-0022,Bloc notes eco 22,papeterie,12.76
+SKU-0023,Intercalaires eco 23,classement,8.53
+SKU-0024,Bloc notes eco 24,papeterie,16.63
+SKU-0025,Agenda eco 25,livres,50.24
+SKU-0026,Etagere pro 26,mobilier,57.71
+SKU-0027,Surligneur standard 27,ecriture,10.45
+SKU-0028,Lampe pro 28,mobilier,151.56
+SKU-0029,Trieur standard 29,classement,15.14
+SKU-0030,Etagere eco 30,mobilier,233.91
+SKU-0031,Code du travail pro 31,livres,42.38
+SKU-0032,Chemise eco 32,classement,13.27
+SKU-0033,Ramette A4 premium 33,papeterie,18.62
+SKU-0034,Dictionnaire standard 34,livres,29.32
+SKU-0035,Bloc notes premium 35,papeterie,16.0
+SKU-0036,Dictionnaire premium 36,livres,40.45
+SKU-0037,Agenda pro 37,livres,11.01
+SKU-0038,Stylo bille pro 38,ecriture,10.54
+SKU-0039,Ramette A4 eco 39,papeterie,22.05
+SKU-0040,Trieur eco 40,classement,15.73
+SKU-0041,Enveloppes standard 41,papeterie,11.91
+SKU-0042,Cahier standard 42,papeterie,20.97
+SKU-0043,Lampe premium 43,mobilier,212.43
+SKU-0044,Lampe pro 44,mobilier,223.29
+SKU-0045,Ramette A4 premium 45,papeterie,6.88
+SKU-0046,Cahier standard 46,papeterie,2.21
+SKU-0047,Bloc notes standard 47,papeterie,4.97
+SKU-0048,Guide fiscal premium 48,livres,46.41
+SKU-0049,Enveloppes pro 49,papeterie,18.78
+SKU-0050,Manuel Excel premium 50,livres,43.15
+SKU-0051,Ramette A4 standard 51,papeterie,3.39
+SKU-0052,Agenda premium 52,livres,24.86
+SKU-0053,Crayon standard 53,ecriture,4.34
+SKU-0054,Etagere pro 54,mobilier,99.34
+SKU-0055,Chemise premium 55,classement,9.37
+SKU-0056,Caisson eco 56,mobilier,154.65
+SKU-0057,Code du travail standard 57,livres,51.4
+SKU-0058,Trieur premium 58,classement,17.61
+SKU-0059,Etagere pro 59,mobilier,347.81
+SKU-0060,Enveloppes eco 60,papeterie,8.16
+SKU-0061,Enveloppes pro 61,papeterie,20.67
+SKU-0062,Guide fiscal eco 62,livres,58.74
+SKU-0063,Manuel Excel eco 63,livres,36.26
+SKU-0064,Etagere pro 64,mobilier,340.38
+SKU-0065,Surligneur standard 65,ecriture,8.39
+SKU-0066,Surligneur standard 66,ecriture,9.67
+SKU-0067,Post-it eco 67,papeterie,19.76
+SKU-0068,Dictionnaire eco 68,livres,54.14
+SKU-0069,Lampe pro 69,mobilier,115.93
+SKU-0070,Surligneur eco 70,ecriture,7.27
+SKU-0071,Guide fiscal pro 71,livres,11.27
+SKU-0072,Classeur eco 72,classement,11.94
+SKU-0073,Surligneur standard 73,ecriture,4.66
+SKU-0074,Ramette A4 standard 74,papeterie,6.71
+SKU-0075,Manuel Excel pro 75,livres,22.34
+SKU-0076,Chaise premium 76,mobilier,332.72
+SKU-0077,Surligneur standard 77,ecriture,4.6
+SKU-0078,Chaise standard 78,mobilier,64.12
+SKU-0079,Etagere standard 79,mobilier,368.61
+SKU-0080,Ramette A4 eco 80,papeterie,9.33
+SKU-0081,Post-it premium 81,papeterie,6.2
+SKU-0082,Chemise pro 82,classement,4.34
+SKU-0083,Classeur standard 83,classement,15.31
+SKU-0084,Manuel Excel standard 84,livres,14.15
+SKU-0085,Bloc notes eco 85,papeterie,15.57
+SKU-0086,Cahier eco 86,papeterie,10.55
+SKU-0087,Intercalaires premium 87,classement,4.28
+SKU-0088,Stylo bille premium 88,ecriture,8.83
+SKU-0089,Bloc notes pro 89,papeterie,3.79
+SKU-0090,Chemise premium 90,classement,17.31
+SKU-0091,Chaise standard 91,mobilier,214.63
+SKU-0092,Crayon standard 92,ecriture,7.84
+SKU-0093,Stylo bille pro 93,ecriture,8.79
+SKU-0094,Crayon pro 94,ecriture,3.78
+SKU-0095,Stylo bille eco 95,ecriture,7.2
+SKU-0096,Surligneur premium 96,ecriture,2.02
+SKU-0097,Chaise pro 97,mobilier,411.98
+SKU-0098,Marqueur premium 98,ecriture,10.16
+SKU-0099,Surligneur premium 99,ecriture,11.9
+SKU-0100,Stylo bille premium 100,ecriture,4.04
+SKU-0101,Enveloppes pro 101,papeterie,24.51
+SKU-0102,Code du travail pro 102,livres,31.59
+SKU-0103,Code du travail pro 103,livres,27.37
+SKU-0104,Bureau eco 104,mobilier,259.25
+SKU-0105,Marqueur pro 105,ecriture,8.77
+SKU-0106,Ramette A4 premium 106,papeterie,19.51
+SKU-0107,Marqueur pro 107,ecriture,7.33
+SKU-0108,Post-it premium 108,papeterie,21.34
+SKU-0109,Code du travail eco 109,livres,23.37
+SKU-0110,Chaise standard 110,mobilier,198.57
+SKU-0111,Surligneur pro 111,ecriture,2.88
+SKU-0112,Classeur pro 112,classement,13.09
+SKU-0113,Enveloppes premium 113,papeterie,24.28
+SKU-0114,Chemise eco 114,classement,14.36
+SKU-0115,Agenda eco 115,livres,53.51
+SKU-0116,Etagere standard 116,mobilier,243.94
+SKU-0117,Bloc notes standard 117,papeterie,7.15
+SKU-0118,Enveloppes eco 118,papeterie,14.77
+SKU-0119,Ramette A4 pro 119,papeterie,8.01
+SKU-0120,Manuel Excel pro 120,livres,44.83
+SKU-0121,Bloc notes standard 121,papeterie,8.28
+SKU-0122,Dictionnaire eco 122,livres,14.61
+SKU-0123,Marqueur pro 123,ecriture,10.44
+SKU-0124,Manuel Excel premium 124,livres,17.38
+SKU-0125,Etagere standard 125,mobilier,193.36
+SKU-0126,Boite archive premium 126,classement,5.47
+SKU-0127,Lampe eco 127,mobilier,350.64
+SKU-0128,Enveloppes pro 128,papeterie,24.03
+SKU-0129,Crayon standard 129,ecriture,4.88
+SKU-0130,Enveloppes premium 130,papeterie,6.62
+SKU-0131,Feutre premium 131,ecriture,11.66
+SKU-0132,Chaise standard 132,mobilier,57.89
+SKU-0133,Trieur eco 133,classement,11.87
+SKU-0134,Post-it standard 134,papeterie,7.76
+SKU-0135,Bureau standard 135,mobilier,152.82
+SKU-0136,Stylo bille standard 136,ecriture,7.46
+SKU-0137,Code du travail standard 137,livres,32.79
+SKU-0138,Crayon standard 138,ecriture,6.53
+SKU-0139,Lampe eco 139,mobilier,147.79
+SKU-0140,Code du travail premium 140,livres,40.11
+SKU-0141,Bureau eco 141,mobilier,217.83
+SKU-0142,Manuel Excel premium 142,livres,50.76
+SKU-0143,Chemise pro 143,classement,9.96
+SKU-0144,Manuel Excel standard 144,livres,56.13
+SKU-0145,Surligneur eco 145,ecriture,6.3
+SKU-0146,Surligneur standard 146,ecriture,9.45
+SKU-0147,Post-it eco 147,papeterie,12.12
+SKU-0148,Etagere eco 148,mobilier,320.78
+SKU-0149,Feutre premium 149,ecriture,4.57
+SKU-0150,Marqueur eco 150,ecriture,10.0

@@ -1,0 +1,439 @@
+{
+  "tables": [
+    "f0006",
+    "f0010",
+    "f0101",
+    "f03b11"
+  ],
+  "businessNeed": "Analyser les creances clients : montants factures et restant dus par client, societe, centre de cout et date de facture.",
+  "contextType": "JD Edwards EnterpriseOne, comptabilite clients (Accounts Receivable)",
+  "factTableSource": "llm_hint",
+  "factHintError": null,
+  "factHintReasoning": "Le besoin porte sur l'analyse des creances clients (montants factures et restant dus) par client, societe, centre de cout et date de facture. La table f03b11 (AR detail - open amounts) contient directement les lignes de factures clients avec les montants (RPAG = montant brut, RPAAP = montant paye/restant du) ainsi que les dates de facture (RPDIVJ, RPDDJ) et les references vers client (RPAN8), societe (RPCO), centre de cout (RPMCU). Son grain est deja la ligne de facture client, correspondant exactement au besoin. Les tables f0101 (client), f0010 (societe) et f0006 (centre de cout) sont des dimensions descriptives (noms, codes) et non des faits. Aucun assemblage n'est necessaire : f03b11 porte deja toutes les mesures demandees au bon grain.",
+  "rejectedHintTables": [],
+  "columnRolesByTable": {
+    "f03b11": {
+      "reasoning": "Grain = une ligne de facture AR (document/société/type/suffixe). RPDOC (numéro de document), RPDCT (type de document), RPKCO (société du document), RPSFX (suffixe de ligne) forment ensemble la clé du document et sont des identifiants métier, donc keyColumns. RPAN8 est le numéro de compte client (Address Book) - clé client, donc keyColumn. RPCO est la société (code société, distinct de RPKCO qui est la société du document) - clé métier société. RPMCU est le centre de coût (Business Unit) - clé métier. RPDIVJ et RPDDJ sont des dates (date de facture et date d'échéance) - elles deviennent des clés de dimension date dans le modèle en étoile. RPAG et RPAAP sont des montants numériques (montant brut facturé et montant restant dû/ouvert) correspondant exactement au besoin métier \"montants factures et restant dus\" - ce sont donc les mesures à agréger. Aucune colonne technique de chargement/audit n'est présente dans cette liste.",
+      "keyColumns": [
+        "RPDOC",
+        "RPDCT",
+        "RPKCO",
+        "RPSFX",
+        "RPAN8",
+        "RPCO",
+        "RPMCU",
+        "RPDIVJ",
+        "RPDDJ"
+      ],
+      "measureColumns": [
+        "RPAG",
+        "RPAAP"
+      ],
+      "technicalColumns": []
+    }
+  },
+  "columnRolesErrors": {},
+  "rejectedColumnNames": {},
+  "physicalLinks": [
+    {
+      "sourceTable": "f0006",
+      "sourceColumn": "MCCO",
+      "targetTable": "f0010",
+      "targetColumn": "CCCO",
+      "cardinality": "N:1",
+      "coverage": 1.0,
+      "nameHint": false
+    },
+    {
+      "sourceTable": "f03b11",
+      "sourceColumn": "RPAN8",
+      "targetTable": "f0101",
+      "targetColumn": "ABAN8",
+      "cardinality": "N:1",
+      "coverage": 1.0,
+      "nameHint": false
+    },
+    {
+      "sourceTable": "f03b11",
+      "sourceColumn": "RPCO",
+      "targetTable": "f0010",
+      "targetColumn": "CCCO",
+      "cardinality": "N:1",
+      "coverage": 1.0,
+      "nameHint": false
+    },
+    {
+      "sourceTable": "f03b11",
+      "sourceColumn": "RPMCU",
+      "targetTable": "f0006",
+      "targetColumn": "MCMCU",
+      "cardinality": "N:1",
+      "coverage": 1.0,
+      "nameHint": false
+    }
+  ],
+  "linkDecisions": [
+    {
+      "link": "f0006.MCCO -> f0010.CCCO (N:1)",
+      "status": "accepte",
+      "decidedBy": "LLM",
+      "reason": "MCCO (société du centre de coût F0006) et CCCO (société F0010) partagent le même code champ CO = Company ; relation standard JDE entre Business Unit et Company Constants.",
+      "coverage": 1.0,
+      "reverseCoverage": null,
+      "linkId": "L1"
+    },
+    {
+      "link": "f03b11.RPAN8 -> f0101.ABAN8 (N:1)",
+      "status": "accepte",
+      "decidedBy": "LLM",
+      "reason": "RPAN8 (F03B11, ligne AR) et ABAN8 (F0101, Address Book) partagent le code AN8 = Address Number, qui est la clé standard du client dans JDE.",
+      "coverage": 1.0,
+      "reverseCoverage": null,
+      "linkId": "L2"
+    },
+    {
+      "link": "f03b11.RPCO -> f0010.CCCO (N:1)",
+      "status": "accepte",
+      "decidedBy": "LLM",
+      "reason": "RPCO (société de la transaction AR) et CCCO (société, F0010) partagent le code CO = Company, lien standard entre transaction et société.",
+      "coverage": 1.0,
+      "reverseCoverage": null,
+      "linkId": "L3"
+    },
+    {
+      "link": "f03b11.RPKCO -> f0010.CCCO (N:1)",
+      "status": "refuse",
+      "decidedBy": "LLM",
+      "reason": "RPKCO est la société clé du document original (key company), généralement identique à RPCO et redondante ; sa faible cardinalité (5 valeurs) sur une PK à 5 lignes peut recouvrir CCCO par coïncidence plutôt que représenter un second lien indépendant vers la société.",
+      "coverage": 1.0,
+      "reverseCoverage": null,
+      "linkId": "L4"
+    },
+    {
+      "link": "f03b11.RPMCU -> f0006.MCMCU (N:1)",
+      "status": "accepte",
+      "decidedBy": "LLM",
+      "reason": "RPMCU (centre de coût de la transaction AR) et MCMCU (centre de coût, F0006) partagent le code MCU = Business Unit, lien standard entre transaction et centre de coût.",
+      "coverage": 1.0,
+      "reverseCoverage": null,
+      "linkId": "L5"
+    },
+    {
+      "link": "f03b11.RPSFX -> f0010.CCCO (N:1)",
+      "status": "refuse",
+      "decidedBy": "LLM",
+      "reason": "RPSFX est le suffixe de paiement (compteur séquentiel, petite plage 0..2), qui recoupe par hasard la clé séquentielle CCCO (5 sociétés) ; aucun sens métier ne relie un suffixe de paiement à une société (indice 2).",
+      "coverage": 1.0,
+      "reverseCoverage": null,
+      "linkId": "L6"
+    }
+  ],
+  "linkArbitrationError": null,
+  "linkTokenUsage": {
+    "inputTokens": 2714,
+    "outputTokens": 852
+  },
+  "rejectedAssembledFacts": [],
+  "tokenUsage": {
+    "inputTokens": 6269,
+    "outputTokens": 1126
+  },
+  "factTableHints": [
+    {
+      "tableName": "f03b11",
+      "justification": "Chaque ligne de f03b11 represente une ecriture de facture client (AR) avec le montant facture (RPAG) et le montant restant/paye (RPAAP), ainsi que les cles vers le client (RPAN8), la societe (RPCO), le centre de cout (RPMCU) et les dates de facture (RPDIVJ, RPDDJ). C'est exactement le grain demande pour analyser les creances clients.",
+      "expectedGrain": "Une ligne par ecriture de facture client (document/ligne de facture AR)"
+    }
+  ],
+  "models": [
+    {
+      "factTable": "f03b11",
+      "starFactTable": "f03b11__fact",
+      "hint": "Chaque ligne de f03b11 represente une ecriture de facture client (AR) avec le montant facture (RPAG) et le montant restant/paye (RPAAP), ainsi que les cles vers le client (RPAN8), la societe (RPCO), le centre de cout (RPMCU) et les dates de facture (RPDIVJ, RPDDJ). C'est exactement le grain demande pour analyser les creances clients.",
+      "columnRolesReasoning": "Grain = une ligne de facture AR (document/société/type/suffixe). RPDOC (numéro de document), RPDCT (type de document), RPKCO (société du document), RPSFX (suffixe de ligne) forment ensemble la clé du document et sont des identifiants métier, donc keyColumns. RPAN8 est le numéro de compte client (Address Book) - clé client, donc keyColumn. RPCO est la société (code société, distinct de RPKCO qui est la société du document) - clé métier société. RPMCU est le centre de coût (Business Unit) - clé métier. RPDIVJ et RPDDJ sont des dates (date de facture et date d'échéance) - elles deviennent des clés de dimension date dans le modèle en étoile. RPAG et RPAAP sont des montants numériques (montant brut facturé et montant restant dû/ouvert) correspondant exactement au besoin métier \"montants factures et restant dus\" - ce sont donc les mesures à agréger. Aucune colonne technique de chargement/audit n'est présente dans cette liste.",
+      "verdict": "ok",
+      "warnings": [],
+      "grain": {
+        "grainColumns": [
+          "RPDOC",
+          "RPKCO",
+          "RPSFX",
+          "RPAN8",
+          "RPCO",
+          "RPMCU",
+          "RPDIVJ",
+          "RPDDJ"
+        ],
+        "totalRows": 2617,
+        "distinctTuples": 2617,
+        "unknownKeyRows": 0,
+        "completingColumns": [],
+        "duplicateRows": 0,
+        "isUnique": true
+      },
+      "foreignKeys": [
+        {
+          "sourceColumn": "RPAN8",
+          "targetTable": "f0101",
+          "targetColumn": "ABAN8",
+          "joinSuccessRatio": 1.0,
+          "nameHint": false,
+          "ambiguous": false,
+          "alternatives": []
+        },
+        {
+          "sourceColumn": "RPCO",
+          "targetTable": "f0010",
+          "targetColumn": "CCCO",
+          "joinSuccessRatio": 1.0,
+          "nameHint": false,
+          "ambiguous": false,
+          "alternatives": []
+        },
+        {
+          "sourceColumn": "RPMCU",
+          "targetTable": "f0006",
+          "targetColumn": "MCMCU",
+          "joinSuccessRatio": 1.0,
+          "nameHint": false,
+          "ambiguous": false,
+          "alternatives": []
+        }
+      ],
+      "generatedDimensions": [
+        {
+          "tableName": "f03b11__dim_date",
+          "keyColumn": "date_key",
+          "attributeColumns": [
+            "annee",
+            "trimestre",
+            "mois",
+            "jour",
+            "jour_semaine"
+          ],
+          "rowCount": 354,
+          "isDate": true,
+          "roleColumns": [
+            "RPDIVJ",
+            "RPDDJ"
+          ]
+        },
+        {
+          "tableName": "f03b11__dim_RPDOC",
+          "keyColumn": "RPDOC",
+          "attributeColumns": [],
+          "rowCount": 1500,
+          "isDate": false,
+          "roleColumns": [
+            "RPDOC"
+          ]
+        },
+        {
+          "tableName": "f03b11__dim_RPKCO",
+          "keyColumn": "RPKCO",
+          "attributeColumns": [],
+          "rowCount": 5,
+          "isDate": false,
+          "roleColumns": [
+            "RPKCO"
+          ]
+        },
+        {
+          "tableName": "f03b11__dim_RPSFX",
+          "keyColumn": "RPSFX",
+          "attributeColumns": [],
+          "rowCount": 3,
+          "isDate": false,
+          "roleColumns": [
+            "RPSFX"
+          ]
+        }
+      ],
+      "measures": [
+        "RPAG",
+        "RPAAP"
+      ],
+      "degenerateColumns": [],
+      "technicalColumns": [],
+      "columns": [
+        {
+          "columnName": "RPDOC",
+          "inferredType": "numeric",
+          "sqlType": "BIGINT",
+          "totalCount": 2617,
+          "nullCount": 0,
+          "distinctCount": 1500,
+          "role": "extracted_key",
+          "fallbackRole": "key_candidate",
+          "requiresNameHint": false,
+          "reason": "aucune table a laquelle se lier : extraite dans f03b11__dim_RPDOC",
+          "linkedTo": null,
+          "dimensionTable": "f03b11__dim_RPDOC",
+          "initialRole": "key_candidate",
+          "roleSource": "LLM"
+        },
+        {
+          "columnName": "RPDCT",
+          "inferredType": "string",
+          "sqlType": "VARCHAR",
+          "totalCount": 2617,
+          "nullCount": 0,
+          "distinctCount": 1,
+          "role": "constant",
+          "fallbackRole": "constant",
+          "requiresNameHint": false,
+          "reason": "une seule valeur distincte : n'apporte aucune information",
+          "linkedTo": null,
+          "dimensionTable": null,
+          "initialRole": "constant",
+          "roleSource": "statistiques"
+        },
+        {
+          "columnName": "RPKCO",
+          "inferredType": "numeric",
+          "sqlType": "BIGINT",
+          "totalCount": 2617,
+          "nullCount": 0,
+          "distinctCount": 5,
+          "role": "extracted_key",
+          "fallbackRole": "key_candidate",
+          "requiresNameHint": false,
+          "reason": "aucune table a laquelle se lier : extraite dans f03b11__dim_RPKCO",
+          "linkedTo": null,
+          "dimensionTable": "f03b11__dim_RPKCO",
+          "initialRole": "key_candidate",
+          "roleSource": "LLM"
+        },
+        {
+          "columnName": "RPSFX",
+          "inferredType": "numeric",
+          "sqlType": "BIGINT",
+          "totalCount": 2617,
+          "nullCount": 0,
+          "distinctCount": 3,
+          "role": "extracted_key",
+          "fallbackRole": "key_candidate",
+          "requiresNameHint": false,
+          "reason": "aucune table a laquelle se lier : extraite dans f03b11__dim_RPSFX",
+          "linkedTo": null,
+          "dimensionTable": "f03b11__dim_RPSFX",
+          "initialRole": "key_candidate",
+          "roleSource": "LLM"
+        },
+        {
+          "columnName": "RPAN8",
+          "inferredType": "numeric",
+          "sqlType": "BIGINT",
+          "totalCount": 2617,
+          "nullCount": 0,
+          "distinctCount": 250,
+          "role": "foreign_key",
+          "fallbackRole": "key_candidate",
+          "requiresNameHint": false,
+          "reason": "100% des valeurs retrouvees dans f0101.ABAN8 (sans concordance de nom), lien accepte par : LLM",
+          "linkedTo": "f0101.ABAN8",
+          "dimensionTable": null,
+          "initialRole": "key_candidate",
+          "roleSource": "LLM"
+        },
+        {
+          "columnName": "RPCO",
+          "inferredType": "numeric",
+          "sqlType": "BIGINT",
+          "totalCount": 2617,
+          "nullCount": 0,
+          "distinctCount": 5,
+          "role": "foreign_key",
+          "fallbackRole": "key_candidate",
+          "requiresNameHint": false,
+          "reason": "100% des valeurs retrouvees dans f0010.CCCO (sans concordance de nom), lien accepte par : LLM",
+          "linkedTo": "f0010.CCCO",
+          "dimensionTable": null,
+          "initialRole": "key_candidate",
+          "roleSource": "LLM"
+        },
+        {
+          "columnName": "RPMCU",
+          "inferredType": "string",
+          "sqlType": "VARCHAR",
+          "totalCount": 2617,
+          "nullCount": 0,
+          "distinctCount": 7,
+          "role": "foreign_key",
+          "fallbackRole": "key_candidate",
+          "requiresNameHint": false,
+          "reason": "100% des valeurs retrouvees dans f0006.MCMCU (sans concordance de nom), lien accepte par : LLM",
+          "linkedTo": "f0006.MCMCU",
+          "dimensionTable": null,
+          "initialRole": "key_candidate",
+          "roleSource": "LLM"
+        },
+        {
+          "columnName": "RPDIVJ",
+          "inferredType": "date",
+          "sqlType": "DATE",
+          "totalCount": 2617,
+          "nullCount": 0,
+          "distinctCount": 269,
+          "role": "extracted_key",
+          "fallbackRole": "date",
+          "requiresNameHint": false,
+          "reason": "date : jointe au calendrier partage f03b11__dim_date",
+          "linkedTo": null,
+          "dimensionTable": "f03b11__dim_date",
+          "initialRole": "date",
+          "roleSource": "LLM"
+        },
+        {
+          "columnName": "RPDDJ",
+          "inferredType": "date",
+          "sqlType": "DATE",
+          "totalCount": 2617,
+          "nullCount": 0,
+          "distinctCount": 324,
+          "role": "extracted_key",
+          "fallbackRole": "date",
+          "requiresNameHint": false,
+          "reason": "date : jointe au calendrier partage f03b11__dim_date",
+          "linkedTo": null,
+          "dimensionTable": "f03b11__dim_date",
+          "initialRole": "date",
+          "roleSource": "LLM"
+        },
+        {
+          "columnName": "RPAG",
+          "inferredType": "numeric",
+          "sqlType": "DOUBLE",
+          "totalCount": 2617,
+          "nullCount": 0,
+          "distinctCount": 1500,
+          "role": "measure",
+          "fallbackRole": "measure",
+          "requiresNameHint": false,
+          "reason": "mesure (LLM)",
+          "linkedTo": null,
+          "dimensionTable": null,
+          "initialRole": "measure",
+          "roleSource": "LLM"
+        },
+        {
+          "columnName": "RPAAP",
+          "inferredType": "numeric",
+          "sqlType": "DOUBLE",
+          "totalCount": 2617,
+          "nullCount": 0,
+          "distinctCount": 872,
+          "role": "measure",
+          "fallbackRole": "measure",
+          "requiresNameHint": false,
+          "reason": "mesure (LLM)",
+          "linkedTo": null,
+          "dimensionTable": null,
+          "initialRole": "measure",
+          "roleSource": "LLM"
+        }
+      ],
+      "assembly": null
+    }
+  ]
+}

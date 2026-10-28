@@ -1,0 +1,6 @@
+{
+  "source": {"kind": "clickhouse", "host": "localhost", "port": 8123, "user": "default", "password": "", "database": "ventes"},
+  "tables": {"ventes": null, "clients": null},
+  "businessNeed": "Analyser le chiffre d'affaires par client et par produit.",
+  "outputDir": "output"
+}

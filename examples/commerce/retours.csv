@@ -1,0 +1,409 @@
+retour_id,ligne_id,date_retour,motif_code,motif_libelle,quantite_retournee,montant_rembourse
+70001,9006607,2024-03-13,ERR,Erreur de commande,8,1616.48
+70002,9002921,2024-08-21,TAI,Taille ou dimension,9,2413.98
+70003,9006960,2025-01-21,AVI,Ne correspond pas a la description,6,1195.8
+70004,9004809,2024-09-21,AVI,Ne correspond pas a la description,6,1116.78
+70005,9008787,2024-06-22,DEF,Produit defectueux,1,33.81
+70006,9007859,2024-05-27,ERR,Erreur de commande,8,497.84
+70007,9003269,2024-06-20,DEF,Produit defectueux,4,1530.04
+70008,9000090,2024-09-22,ERR,Erreur de commande,3,295.11
+70009,9001717,2024-09-09,ERR,Erreur de commande,3,122.73
+70010,9003028,2024-03-29,RET,Livraison en retard,2,358.02
+70011,9003028,2024-03-29,RET,Livraison en retard,4,716.04
+70012,9003408,2024-04-01,TAI,Taille ou dimension,2,514.68
+70013,9001043,2024-03-12,DEF,Produit defectueux,1,168.91
+70014,9005956,2024-11-08,ERR,Erreur de commande,2,212.18
+70015,9006476,2024-06-01,RET,Livraison en retard,1,389.08
+70016,9006359,2024-08-17,TAI,Taille ou dimension,9,3868.65
+70017,9002646,2024-05-20,DEF,Produit defectueux,1,175.7
+70018,9006516,2024-05-20,RET,Livraison en retard,5,1565.1
+70019,9007789,2024-12-30,DEF,Produit defectueux,5,1722.75
+70020,9005615,2024-03-07,AVI,Ne correspond pas a la description,8,1629.84
+70021,9005871,2024-02-21,AVI,Ne correspond pas a la description,7,74.27
+70022,9003377,2024-03-26,ERR,Erreur de commande,1,319.75
+70023,9006392,2024-05-18,RET,Livraison en retard,1,99.08
+70024,9000337,2024-05-06,DEF,Produit defectueux,4,724.36
+70025,9006712,2024-05-18,TAI,Taille ou dimension,2,123.38
+70026,9004594,2024-05-05,TAI,Taille ou dimension,4,1528.92
+70027,9006442,2024-12-18,DEF,Produit defectueux,2,74.02
+70028,9002266,2024-07-29,ERR,Erreur de commande,1,393.37
+70029,9001961,2024-06-16,RET,Livraison en retard,1,281.94
+70030,9007910,2024-10-10,AVI,Ne correspond pas a la description,4,819.52
+70031,9007048,2024-04-13,RET,Livraison en retard,2,31.5
+70032,9005697,2024-02-24,RET,Livraison en retard,3,336.18
+70033,9008262,2024-03-16,RET,Livraison en retard,6,1229.04
+70034,9008615,2024-06-16,DEF,Produit defectueux,8,379.2
+70035,9006543,2025-01-28,DEF,Produit defectueux,2,544.68
+70036,9000437,2024-04-01,DEF,Produit defectueux,2,634.56
+70037,9001854,2024-08-10,TAI,Taille ou dimension,2,123.14
+70038,9002762,2024-05-02,ERR,Erreur de commande,1,342.7
+70039,9005758,2024-09-24,AVI,Ne correspond pas a la description,2,32.18
+70040,9001984,2024-08-29,DEF,Produit defectueux,6,1933.32
+70041,9001355,2024-11-13,TAI,Taille ou dimension,1,185.73
+70042,9003579,2024-10-12,AVI,Ne correspond pas a la description,2,709.74
+70043,9003735,2024-06-08,ERR,Erreur de commande,8,854.32
+70044,9008523,2024-12-12,TAI,Taille ou dimension,6,645.66
+70045,9008183,2024-03-30,ERR,Erreur de commande,1,206.2
+70046,9007806,2024-10-23,ERR,Erreur de commande,2,391.0
+70047,9002836,2024-10-05,AVI,Ne correspond pas a la description,7,2271.22
+70048,9008116,2024-08-12,TAI,Taille ou dimension,1,329.63
+70049,9000826,2024-05-27,AVI,Ne correspond pas a la description,1,313.65
+70050,9004349,2024-02-28,TAI,Taille ou dimension,7,254.24
+70051,9001111,2024-04-07,DEF,Produit defectueux,6,367.98
+70052,9006226,2024-03-07,DEF,Produit defectueux,9,2685.6
+70053,9005052,2024-01-09,RET,Livraison en retard,4,955.64
+70054,9001016,2024-03-15,DEF,Produit defectueux,4,384.08
+70055,9006521,2024-08-05,RET,Livraison en retard,2,391.8
+70056,9001157,2024-11-26,ERR,Erreur de commande,2,204.74
+70057,9005969,2024-09-14,ERR,Erreur de commande,4,673.72
+70058,9007918,2024-07-31,RET,Livraison en retard,2,746.74
+70059,9003130,2024-02-16,DEF,Produit defectueux,1,355.71
+70060,9006949,2024-05-23,ERR,Erreur de commande,4,805.12
+70061,9003896,2024-09-16,RET,Livraison en retard,8,1606.72
+70062,9005881,2024-08-19,ERR,Erreur de commande,3,1216.95
+70063,9006766,2024-03-14,TAI,Taille ou dimension,7,671.02
+70064,9006766,2024-03-14,TAI,Taille ou dimension,8,766.88
+70065,9001291,2024-08-25,DEF,Produit defectueux,4,1157.56
+70066,9000677,2025-01-03,TAI,Taille ou dimension,1,32.43
+70067,9007061,2024-06-21,AVI,Ne correspond pas a la description,2,480.78
+70068,9002347,2024-05-03,TAI,Taille ou dimension,9,203.67
+70069,9008860,2024-06-30,ERR,Erreur de commande,2,173.38
+70070,9003104,2024-03-10,AVI,Ne correspond pas a la description,2,700.74
+70071,9006333,2024-08-12,RET,Livraison en retard,1,316.82
+70072,9000227,2024-01-23,TAI,Taille ou dimension,4,994.8
+70073,9000558,2024-12-07,RET,Livraison en retard,9,1951.56
+70074,9006457,2024-12-25,TAI,Taille ou dimension,2,729.48
+70075,9005205,2024-12-04,DEF,Produit defectueux,3,646.35
+70076,9001841,2024-09-14,RET,Livraison en retard,2,59.52
+70077,9001782,2024-11-12,ERR,Erreur de commande,1,33.12
+70078,9007012,2024-07-21,DEF,Produit defectueux,3,1029.24
+70079,9008265,2024-08-12,RET,Livraison en retard,4,813.88
+70080,9000177,2024-12-31,AVI,Ne correspond pas a la description,5,1328.15
+70081,9003619,2025-01-03,ERR,Erreur de commande,1,326.13
+70082,9001549,2024-01-23,TAI,Taille ou dimension,7,761.11
+70083,9004252,2024-06-30,RET,Livraison en retard,1,383.73
+70084,9001448,2024-11-01,AVI,Ne correspond pas a la description,4,914.48
+70085,9003866,2024-07-16,RET,Livraison en retard,8,1577.52
+70086,9007646,2024-02-06,AVI,Ne correspond pas a la description,6,2252.22
+70087,9006028,2024-10-25,AVI,Ne correspond pas a la description,5,1360.45
+70088,9002413,2024-12-28,TAI,Taille ou dimension,1,244.29
+70089,9007022,2024-04-20,ERR,Erreur de commande,9,445.23
+70090,9002014,2024-10-13,DEF,Produit defectueux,7,835.59
+70091,9002544,2024-05-27,ERR,Erreur de commande,1,286.92
+70092,9006978,2024-10-27,AVI,Ne correspond pas a la description,2,382.88
+70093,9004306,2025-01-10,AVI,Ne correspond pas a la description,3,20.34
+70094,9000985,2024-10-28,TAI,Taille ou dimension,3,347.19
+70095,9004325,2024-06-10,AVI,Ne correspond pas a la description,1,141.06
+70096,9000678,2024-09-08,RET,Livraison en retard,5,1738.9
+70097,9007199,2024-07-21,DEF,Produit defectueux,4,1339.12
+70098,9002749,2024-08-15,RET,Livraison en retard,2,570.18
+70099,9000410,2024-05-02,TAI,Taille ou dimension,1,67.24
+70100,9006955,2024-08-19,RET,Livraison en retard,2,51.1
+70101,9003144,2024-08-24,RET,Livraison en retard,2,533.16
+70102,9004035,2024-04-26,ERR,Erreur de commande,6,1946.58
+70103,9001562,2024-09-06,TAI,Taille ou dimension,1,354.1
+70104,9005382,2024-07-17,AVI,Ne correspond pas a la description,6,1206.06
+70105,9000975,2024-03-03,TAI,Taille ou dimension,2,70.7
+70106,9006729,2024-11-14,RET,Livraison en retard,3,265.26
+70107,9007909,2024-10-11,AVI,Ne correspond pas a la description,1,166.09
+70108,9002791,2024-10-29,RET,Livraison en retard,6,139.2
+70109,9006847,2024-07-15,AVI,Ne correspond pas a la description,6,1779.78
+70110,9004453,2024-08-31,ERR,Erreur de commande,3,133.47
+70111,9002774,2024-01-12,TAI,Taille ou dimension,1,93.2
+70112,9002774,2024-01-12,TAI,Taille ou dimension,2,186.4
+70113,9000192,2024-08-20,DEF,Produit defectueux,1,204.66
+70114,9007339,2024-08-17,ERR,Erreur de commande,1,355.0
+70115,9001343,2024-03-30,AVI,Ne correspond pas a la description,4,186.0
+70116,9002863,2024-05-03,RET,Livraison en retard,1,312.46
+70117,9001219,2024-10-17,RET,Livraison en retard,5,1520.05
+70118,9001619,2024-03-04,DEF,Produit defectueux,8,2874.8
+70119,9003214,2024-09-30,ERR,Erreur de commande,1,353.03
+70120,9008481,2024-06-03,AVI,Ne correspond pas a la description,2,600.8
+70121,9007560,2024-08-04,RET,Livraison en retard,2,76.76
+70122,9001943,2024-06-17,AVI,Ne correspond pas a la description,2,809.24
+70123,9002620,2024-06-26,RET,Livraison en retard,1,109.67
+70124,9007381,2024-08-28,TAI,Taille ou dimension,2,627.66
+70125,9000419,2024-03-06,DEF,Produit defectueux,3,1267.95
+70126,9008557,2024-11-05,RET,Livraison en retard,3,1184.4
+70127,9003827,2024-06-24,DEF,Produit defectueux,1,181.14
+70128,9007506,2024-04-10,TAI,Taille ou dimension,3,825.39
+70129,9001815,2024-03-31,DEF,Produit defectueux,4,299.32
+70130,9005446,2024-04-17,AVI,Ne correspond pas a la description,6,1286.16
+70131,9003220,2024-08-31,AVI,Ne correspond pas a la description,5,1713.2
+70132,9004931,2024-06-16,RET,Livraison en retard,2,673.92
+70133,9008222,2024-10-12,AVI,Ne correspond pas a la description,8,1491.2
+70134,9007400,2024-08-05,ERR,Erreur de commande,2,622.18
+70135,9001568,2024-05-11,AVI,Ne correspond pas a la description,4,922.28
+70136,9003298,2024-10-04,AVI,Ne correspond pas a la description,1,327.66
+70137,9005049,2024-11-06,AVI,Ne correspond pas a la description,8,2566.16
+70138,9000588,2024-02-14,AVI,Ne correspond pas a la description,1,284.15
+70139,9008728,2024-10-15,DEF,Produit defectueux,3,993.36
+70140,9003189,2024-04-10,TAI,Taille ou dimension,2,564.2
+70141,9007651,2024-02-10,AVI,Ne correspond pas a la description,2,556.96
+70142,9005821,2024-07-15,TAI,Taille ou dimension,3,1091.07
+70143,9007481,2024-04-22,DEF,Produit defectueux,3,627.15
+70144,9001405,2024-05-22,ERR,Erreur de commande,3,566.67
+70145,9003452,2024-10-07,DEF,Produit defectueux,5,1408.7
+70146,9004714,2024-06-01,DEF,Produit defectueux,2,637.16
+70147,9006129,2024-04-15,DEF,Produit defectueux,3,1140.03
+70148,9005680,2024-10-05,TAI,Taille ou dimension,3,958.8
+70149,9002319,2024-03-24,AVI,Ne correspond pas a la description,2,658.46
+70150,9002319,2024-03-24,AVI,Ne correspond pas a la description,5,1646.15
+70151,9002503,2024-12-28,RET,Livraison en retard,1,176.72
+70152,9006096,2024-09-04,ERR,Erreur de commande,2,254.62
+70153,9008154,2024-04-29,ERR,Erreur de commande,2,449.44
+70154,9007114,2024-07-19,AVI,Ne correspond pas a la description,2,611.52
+70155,9005346,2024-03-27,DEF,Produit defectueux,2,729.06
+70156,9000086,2024-12-20,ERR,Erreur de commande,2,512.28
+70157,9000672,2024-06-22,TAI,Taille ou dimension,1,182.05
+70158,9007613,2025-01-03,ERR,Erreur de commande,7,2019.71
+70159,9004553,2025-01-21,AVI,Ne correspond pas a la description,7,506.94
+70160,9001601,2024-02-04,TAI,Taille ou dimension,9,1388.88
+70161,9004676,2024-05-14,AVI,Ne correspond pas a la description,1,225.06
+70162,9002576,2024-04-05,DEF,Produit defectueux,5,1598.7
+70163,9003040,2024-04-19,DEF,Produit defectueux,1,357.64
+70164,9003724,2024-11-23,DEF,Produit defectueux,6,1112.16
+70165,9004579,2024-12-03,DEF,Produit defectueux,6,2053.8
+70166,9007566,2024-11-06,DEF,Produit defectueux,3,291.69
+70167,9001389,2024-07-30,RET,Livraison en retard,2,679.26
+70168,9000911,2024-08-22,RET,Livraison en retard,2,586.74
+70169,9005596,2024-11-25,TAI,Taille ou dimension,1,47.57
+70170,9007575,2024-04-13,ERR,Erreur de commande,2,82.58
+70171,9004147,2024-11-22,RET,Livraison en retard,1,352.74
+70172,9001970,2024-01-12,AVI,Ne correspond pas a la description,2,747.06
+70173,9007305,2024-02-24,DEF,Produit defectueux,2,358.36
+70174,9003407,2024-10-30,DEF,Produit defectueux,5,322.05
+70175,9002908,2024-12-08,DEF,Produit defectueux,3,290.85
+70176,9001393,2024-07-17,RET,Livraison en retard,6,372.24
+70177,9005672,2024-08-14,DEF,Produit defectueux,1,85.22
+70178,9004693,2025-01-16,DEF,Produit defectueux,5,705.45
+70179,9004930,2024-07-04,AVI,Ne correspond pas a la description,10,1067.3
+70180,9000684,2024-12-28,TAI,Taille ou dimension,3,658.11
+70181,9007836,2024-08-13,AVI,Ne correspond pas a la description,2,304.08
+70182,9004235,2025-01-12,DEF,Produit defectueux,5,1319.25
+70183,9001846,2025-01-02,TAI,Taille ou dimension,2,572.08
+70184,9008436,2025-01-04,TAI,Taille ou dimension,4,463.92
+70185,9002268,2024-05-31,TAI,Taille ou dimension,1,283.55
+70186,9006676,2024-04-12,TAI,Taille ou dimension,3,503.79
+70187,9001873,2024-02-29,TAI,Taille ou dimension,1,323.13
+70188,9008339,2024-12-01,RET,Livraison en retard,1,260.45
+70189,9000092,2024-09-19,RET,Livraison en retard,1,36.23
+70190,9005520,2024-09-25,TAI,Taille ou dimension,2,13.3
+70191,9002376,2024-05-30,ERR,Erreur de commande,5,2182.5
+70192,9002376,2024-05-30,ERR,Erreur de commande,7,3055.5
+70193,9006680,2024-09-02,AVI,Ne correspond pas a la description,3,729.75
+70194,9001569,2024-03-02,ERR,Erreur de commande,2,569.14
+70195,9004699,2024-06-18,TAI,Taille ou dimension,1,49.99
+70196,9008451,2024-08-08,RET,Livraison en retard,2,317.32
+70197,9007546,2024-04-27,TAI,Taille ou dimension,9,1126.98
+70198,9001247,2024-07-26,AVI,Ne correspond pas a la description,9,3647.34
+70199,9000184,2024-04-12,ERR,Erreur de commande,3,160.83
+70200,9006748,2024-05-17,DEF,Produit defectueux,5,911.65
+70201,9005573,2025-01-12,DEF,Produit defectueux,1,54.27
+70202,9006394,2024-01-24,AVI,Ne correspond pas a la description,2,550.5
+70203,9003051,2024-09-19,TAI,Taille ou dimension,1,87.06
+70204,9005318,2024-04-06,RET,Livraison en retard,4,1528.04
+70205,9001257,2024-05-14,RET,Livraison en retard,1,7.79
+70206,9004884,2024-05-01,DEF,Produit defectueux,1,241.78
+70207,9006469,2024-05-16,AVI,Ne correspond pas a la description,8,2799.28
+70208,9005696,2024-08-19,AVI,Ne correspond pas a la description,7,1103.69
+70209,9008682,2024-11-15,DEF,Produit defectueux,3,580.86
+70210,9003037,2024-03-06,TAI,Taille ou dimension,6,1006.8
+70211,9006447,2024-12-13,TAI,Taille ou dimension,2,429.68
+70212,9006436,2024-10-07,AVI,Ne correspond pas a la description,1,360.21
+70213,9001234,2024-11-03,AVI,Ne correspond pas a la description,8,803.92
+70214,9007176,2024-02-11,DEF,Produit defectueux,1,398.8
+70215,9007828,2024-05-19,AVI,Ne correspond pas a la description,1,219.71
+70216,9007628,2024-10-30,RET,Livraison en retard,2,222.9
+70217,9002002,2024-06-27,ERR,Erreur de commande,4,825.24
+70218,9008551,2024-11-06,AVI,Ne correspond pas a la description,1,216.75
+70219,9001419,2024-09-02,RET,Livraison en retard,5,468.35
+70220,9003813,2024-10-25,TAI,Taille ou dimension,2,416.72
+70221,9000464,2024-03-24,ERR,Erreur de commande,1,192.81
+70222,9006161,2024-11-19,DEF,Produit defectueux,2,682.22
+70223,9002017,2024-09-27,ERR,Erreur de commande,2,365.12
+70224,9002628,2024-03-04,ERR,Erreur de commande,1,89.77
+70225,9001473,2024-03-18,TAI,Taille ou dimension,1,349.14
+70226,9002892,2024-05-03,RET,Livraison en retard,1,234.92
+70227,9006727,2024-11-17,RET,Livraison en retard,5,817.25
+70228,9008287,2024-09-09,TAI,Taille ou dimension,7,1558.9
+70229,9003914,2024-03-05,ERR,Erreur de commande,2,501.84
+70230,9004136,2024-10-30,RET,Livraison en retard,3,969.57
+70231,9002631,2024-03-13,RET,Livraison en retard,2,437.42
+70232,9003527,2024-08-30,TAI,Taille ou dimension,2,76.46
+70233,9001804,2024-06-06,RET,Livraison en retard,2,704.62
+70234,9007143,2024-08-20,DEF,Produit defectueux,2,188.64
+70235,9006974,2024-03-20,RET,Livraison en retard,2,48.56
+70236,9000703,2024-02-04,AVI,Ne correspond pas a la description,1,228.18
+70237,9000758,2024-10-05,RET,Livraison en retard,2,780.4
+70238,9005650,2025-01-06,RET,Livraison en retard,6,616.92
+70239,9008351,2024-10-09,AVI,Ne correspond pas a la description,6,1948.02
+70240,9007958,2024-06-03,ERR,Erreur de commande,3,1101.39
+70241,9004934,2025-01-10,ERR,Erreur de commande,8,1876.24
+70242,9005036,2024-12-19,ERR,Erreur de commande,3,563.79
+70243,9005836,2024-12-29,TAI,Taille ou dimension,2,809.12
+70244,9003976,2024-07-22,RET,Livraison en retard,4,765.44
+70245,9001609,2024-09-25,TAI,Taille ou dimension,4,1312.24
+70246,9001749,2024-12-16,DEF,Produit defectueux,1,237.32
+70247,9000471,2024-07-19,DEF,Produit defectueux,2,80.16
+70248,9002533,2024-11-18,TAI,Taille ou dimension,4,372.84
+70249,9003383,2024-06-14,DEF,Produit defectueux,6,966.54
+70250,9003383,2024-06-14,DEF,Produit defectueux,5,805.45
+70251,9006588,2024-04-26,ERR,Erreur de commande,1,269.25
+70252,9006451,2024-04-13,DEF,Produit defectueux,1,232.2
+70253,9008232,2024-08-14,TAI,Taille ou dimension,2,393.64
+70254,9004520,2024-07-19,AVI,Ne correspond pas a la description,1,145.99
+70255,9000098,2024-07-20,ERR,Erreur de commande,1,36.62
+70256,9007875,2024-09-17,AVI,Ne correspond pas a la description,1,116.66
+70257,9005081,2024-07-28,TAI,Taille ou dimension,8,2656.24
+70258,9003918,2024-02-01,AVI,Ne correspond pas a la description,1,366.55
+70259,9008364,2024-09-05,AVI,Ne correspond pas a la description,1,255.89
+70260,9007220,2024-09-13,TAI,Taille ou dimension,6,1733.82
+70261,9007403,2024-02-20,TAI,Taille ou dimension,1,122.53
+70262,9004011,2024-03-16,RET,Livraison en retard,3,927.42
+70263,9002019,2024-02-19,ERR,Erreur de commande,1,359.45
+70264,9002019,2024-02-19,ERR,Erreur de commande,5,1797.25
+70265,9008698,2024-11-29,AVI,Ne correspond pas a la description,5,1646.75
+70266,9007899,2024-03-07,RET,Livraison en retard,8,2297.52
+70267,9008911,2024-08-05,RET,Livraison en retard,3,783.24
+70268,9007191,2024-01-14,DEF,Produit defectueux,1,129.58
+70269,9008810,2024-08-05,AVI,Ne correspond pas a la description,4,1315.88
+70270,9001127,2024-07-24,AVI,Ne correspond pas a la description,2,372.74
+70271,9001233,2024-04-19,TAI,Taille ou dimension,1,85.26
+70272,9001723,2024-04-01,DEF,Produit defectueux,1,244.51
+70273,9003542,2024-08-03,RET,Livraison en retard,2,604.66
+70274,9003035,2024-04-02,DEF,Produit defectueux,4,385.48
+70275,9007187,2024-07-07,DEF,Produit defectueux,2,712.94
+70276,9005775,2024-06-22,AVI,Ne correspond pas a la description,3,877.8
+70277,9003043,2024-09-16,DEF,Produit defectueux,6,714.72
+70278,9001222,2024-10-30,RET,Livraison en retard,2,480.0
+70279,9000535,2024-03-06,TAI,Taille ou dimension,2,488.38
+70280,9006947,2024-05-05,AVI,Ne correspond pas a la description,1,224.46
+70281,9002615,2024-05-10,TAI,Taille ou dimension,5,494.8
+70282,9006679,2024-09-15,AVI,Ne correspond pas a la description,8,2096.64
+70283,9001339,2024-01-29,ERR,Erreur de commande,7,1040.97
+70284,9002099,2025-01-02,ERR,Erreur de commande,2,313.0
+70285,9006301,2024-02-15,AVI,Ne correspond pas a la description,2,706.66
+70286,9004627,2024-12-14,RET,Livraison en retard,3,724.41
+70287,9000333,2024-12-17,TAI,Taille ou dimension,1,224.59
+70288,9008202,2024-12-29,DEF,Produit defectueux,3,492.72
+70289,9002772,2024-03-27,TAI,Taille ou dimension,4,408.44
+70290,9006216,2024-07-24,TAI,Taille ou dimension,1,410.48
+70291,9000481,2024-08-17,ERR,Erreur de commande,2,585.14
+70292,9002429,2024-05-06,TAI,Taille ou dimension,6,1622.34
+70293,9006592,2024-09-28,TAI,Taille ou dimension,1,228.13
+70294,9002661,2024-03-03,AVI,Ne correspond pas a la description,1,115.45
+70295,9004824,2024-05-27,ERR,Erreur de commande,1,395.02
+70296,9008160,2024-12-17,ERR,Erreur de commande,7,508.2
+70297,9002299,2024-05-05,TAI,Taille ou dimension,3,115.95
+70298,9005010,2024-12-20,ERR,Erreur de commande,2,406.94
+70299,9005197,2024-09-10,DEF,Produit defectueux,5,2082.8
+70300,9008253,2025-01-11,DEF,Produit defectueux,4,736.92
+70301,9000910,2024-11-18,AVI,Ne correspond pas a la description,5,1858.35
+70302,9007047,2024-04-24,DEF,Produit defectueux,1,369.02
+70303,9005921,2024-07-06,AVI,Ne correspond pas a la description,1,179.99
+70304,9003486,2024-10-30,RET,Livraison en retard,2,478.78
+70305,9000183,2024-04-09,TAI,Taille ou dimension,10,159.9
+70306,9002314,2024-04-10,TAI,Taille ou dimension,1,94.72
+70307,9000778,2024-10-22,TAI,Taille ou dimension,1,308.82
+70308,9003538,2024-11-11,AVI,Ne correspond pas a la description,6,1041.9
+70309,9003413,2025-01-05,RET,Livraison en retard,1,49.63
+70310,9001063,2024-05-14,RET,Livraison en retard,2,492.9
+70311,9005543,2024-09-07,TAI,Taille ou dimension,1,194.92
+70312,9004956,2024-02-20,TAI,Taille ou dimension,2,558.58
+70313,9001930,2024-09-14,ERR,Erreur de commande,5,1107.75
+70314,9003798,2024-04-06,TAI,Taille ou dimension,1,344.55
+70315,9003291,2024-03-03,AVI,Ne correspond pas a la description,1,337.39
+70316,9008402,2024-08-29,DEF,Produit defectueux,3,578.97
+70317,9005814,2024-12-16,DEF,Produit defectueux,3,835.98
+70318,9000511,2024-01-18,TAI,Taille ou dimension,6,2116.92
+70319,9003510,2024-08-22,AVI,Ne correspond pas a la description,3,762.66
+70320,9007522,2024-09-24,DEF,Produit defectueux,3,1132.17
+70321,9008100,2025-01-04,RET,Livraison en retard,10,3636.1
+70322,9000173,2024-03-27,AVI,Ne correspond pas a la description,4,130.04
+70323,9003124,2024-05-13,AVI,Ne correspond pas a la description,3,400.71
+70324,9005273,2024-05-09,TAI,Taille ou dimension,1,332.45
+70325,9004951,2024-08-02,ERR,Erreur de commande,6,1877.22
+70326,9001742,2024-06-07,DEF,Produit defectueux,1,334.91
+70327,9005925,2024-08-03,ERR,Erreur de commande,3,952.62
+70328,9008133,2024-08-16,RET,Livraison en retard,3,370.05
+70329,9005280,2024-06-09,RET,Livraison en retard,1,207.63
+70330,9001847,2025-01-06,DEF,Produit defectueux,7,335.86
+70331,9004288,2024-09-04,ERR,Erreur de commande,5,754.65
+70332,9000217,2024-10-16,DEF,Produit defectueux,3,659.82
+70333,9004478,2025-01-09,ERR,Erreur de commande,6,2179.92
+70334,9004163,2024-10-11,TAI,Taille ou dimension,5,714.25
+70335,9004976,2024-10-14,AVI,Ne correspond pas a la description,3,554.31
+70336,9005470,2024-04-11,TAI,Taille ou dimension,9,1932.66
+70337,9008056,2024-05-21,ERR,Erreur de commande,5,1458.55
+70338,9006472,2024-06-23,RET,Livraison en retard,4,1053.64
+70339,9000995,2024-02-10,DEF,Produit defectueux,8,1903.76
+70340,9000996,2024-11-19,AVI,Ne correspond pas a la description,3,719.19
+70341,9006734,2024-07-17,DEF,Produit defectueux,3,793.14
+70342,9007762,2024-02-24,ERR,Erreur de commande,1,272.94
+70343,9007495,2024-07-20,ERR,Erreur de commande,6,2355.72
+70344,9003926,2024-04-14,ERR,Erreur de commande,1,35.33
+70345,9003496,2024-04-22,AVI,Ne correspond pas a la description,2,358.18
+70346,9000097,2024-07-15,TAI,Taille ou dimension,4,1419.28
+70347,9006355,2024-07-27,AVI,Ne correspond pas a la description,1,203.17
+70348,9006599,2024-01-30,TAI,Taille ou dimension,4,555.52
+70349,9005987,2024-07-29,RET,Livraison en retard,2,384.74
+70350,9005640,2024-10-27,TAI,Taille ou dimension,1,37.94
+70351,9006889,2024-11-06,AVI,Ne correspond pas a la description,1,348.55
+70352,9002981,2024-10-17,ERR,Erreur de commande,3,250.44
+70353,9001519,2024-10-22,AVI,Ne correspond pas a la description,4,1536.4
+70354,9002309,2024-08-24,AVI,Ne correspond pas a la description,6,2363.1
+70355,9006234,2024-07-26,DEF,Produit defectueux,5,1098.8
+70356,9001570,2024-02-08,ERR,Erreur de commande,2,490.06
+70357,9003084,2024-01-26,AVI,Ne correspond pas a la description,1,216.19
+70358,9007640,2024-10-02,RET,Livraison en retard,5,1225.05
+70359,9001369,2024-11-23,TAI,Taille ou dimension,4,1444.48
+70360,9006478,2024-11-16,TAI,Taille ou dimension,5,1354.75
+70361,9000304,2024-11-17,RET,Livraison en retard,5,1454.25
+70362,9004054,2024-10-02,DEF,Produit defectueux,7,1563.03
+70363,9002555,2024-06-17,AVI,Ne correspond pas a la description,2,664.78
+70364,9004400,2024-02-17,DEF,Produit defectueux,2,523.16
+70365,9007441,2024-07-15,RET,Livraison en retard,2,397.58
+70366,9003243,2024-02-17,AVI,Ne correspond pas a la description,1,383.05
+70367,9005684,2024-01-29,DEF,Produit defectueux,1,39.64
+70368,9007561,2024-08-06,RET,Livraison en retard,2,471.22
+70369,9000673,2025-02-01,AVI,Ne correspond pas a la description,9,1189.53
+70370,9000601,2024-04-24,AVI,Ne correspond pas a la description,2,717.46
+70371,9007614,2025-01-11,ERR,Erreur de commande,6,620.76
+70372,9001143,2024-12-07,AVI,Ne correspond pas a la description,5,1878.75
+70373,9001543,2024-07-23,DEF,Produit defectueux,1,397.96
+70374,9001375,2025-01-25,AVI,Ne correspond pas a la description,3,616.86
+70375,9007396,2024-11-01,DEF,Produit defectueux,4,207.96
+70376,9004567,2024-12-16,ERR,Erreur de commande,5,1482.3
+70377,9001640,2024-03-05,DEF,Produit defectueux,1,68.18
+70378,9007189,2024-07-23,RET,Livraison en retard,5,367.3
+70379,9008350,2024-10-16,TAI,Taille ou dimension,1,340.59
+70380,9006941,2024-06-12,TAI,Taille ou dimension,4,883.8
+70381,9001500,2024-12-28,AVI,Ne correspond pas a la description,2,357.54
+70382,9004589,2024-11-02,DEF,Produit defectueux,1,114.34
+70383,9007171,2025-01-18,TAI,Taille ou dimension,2,265.72
+70384,9003330,2024-03-19,DEF,Produit defectueux,2,400.04
+70385,9001535,2024-12-11,ERR,Erreur de commande,3,926.1
+70386,9004647,2024-03-05,RET,Livraison en retard,4,1146.96
+70387,9006990,2024-04-20,RET,Livraison en retard,1,83.94
+70388,9001931,2024-09-21,TAI,Taille ou dimension,1,231.38
+70389,9000812,2024-08-21,AVI,Ne correspond pas a la description,6,558.48
+70390,9004161,2024-08-08,DEF,Produit defectueux,1,155.5
+70391,9004161,2024-08-08,DEF,Produit defectueux,1,155.5
+70392,9007277,2024-07-18,DEF,Produit defectueux,2,414.18
+70393,9005975,2024-02-26,RET,Livraison en retard,1,97.5
+70394,9007985,2024-07-10,TAI,Taille ou dimension,2,655.6
+70395,9003181,2024-07-07,ERR,Erreur de commande,2,93.12
+70396,9001228,2024-03-03,ERR,Erreur de commande,8,2695.76
+70397,9005120,2024-02-07,DEF,Produit defectueux,2,213.22
+70398,9003869,2024-12-08,ERR,Erreur de commande,1,384.0
+70399,9000178,2025-01-01,AVI,Ne correspond pas a la description,5,1414.2
+70400,9001296,2024-02-24,RET,Livraison en retard,1,26.8
+70401,9007695,2024-06-10,DEF,Produit defectueux,3,365.25
+70402,9001046,2024-07-18,TAI,Taille ou dimension,6,1233.36
+70403,9001783,2024-08-26,RET,Livraison en retard,2,608.14
+70404,9000656,2024-08-15,DEF,Produit defectueux,3,739.29
+70405,9006427,2024-12-08,RET,Livraison en retard,1,127.86
+70406,9008250,2024-11-06,ERR,Erreur de commande,3,50.04
+70407,9003078,2024-11-11,AVI,Ne correspond pas a la description,1,40.37
+70408,9008664,2024-09-05,ERR,Erreur de commande,3,1248.09

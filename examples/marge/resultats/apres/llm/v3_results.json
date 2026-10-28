@@ -1,0 +1,666 @@
+{
+  "tables": [
+    "clients",
+    "commandes",
+    "couts_achat",
+    "expeditions",
+    "lignes_commande",
+    "produits",
+    "stocks_journaliers",
+    "tarification_lignes"
+  ],
+  "businessNeed": "Analyser la marge brute de chaque ligne de commande : chiffre d'affaires HT, TVA, cout d'achat, couts de transport et poids expedie, ainsi que les frais de port factures au client, par client, produit, canal et date de commande.",
+  "contextType": "grossiste B2B en fournitures de bureau, ventes web, par commercial et par telephone",
+  "factTableSource": "llm_hint",
+  "factHintError": null,
+  "factHintReasoning": "Le besoin porte sur la marge brute par ligne de commande : CA HT, TVA, cout d'achat, cout de transport, poids expedie et frais de port, analyses par client, produit, canal et date de commande. Le grain le plus fin est la ligne de commande (lignes_commande). Aucune table seule ne porte toutes les mesures : le CA HT/TVA est dans tarification_lignes, le cout d'achat dans couts_achat, le cout de transport et poids dans expeditions (plus fin, N expeditions par ligne, donc a agreger par somme), les frais de port et client/canal/date sont dans commandes (plus grossier que la ligne, donc a repartir au prorata du montant_ht), le produit vient de lignes_commande/produits. Il faut donc assembler un fait a partir de lignes_commande comme ancre, en joignant tarification_lignes, couts_achat, expeditions (agrege) et commandes (pour les attributs client/canal/date et l'allocation des frais de port).",
+  "rejectedHintTables": [],
+  "columnRolesByTable": {},
+  "columnRolesErrors": {},
+  "rejectedColumnNames": {},
+  "physicalLinks": [
+    {
+      "sourceTable": "commandes",
+      "sourceColumn": "client_id",
+      "targetTable": "clients",
+      "targetColumn": "client_id",
+      "cardinality": "N:1",
+      "coverage": 1.0,
+      "nameHint": true
+    },
+    {
+      "sourceTable": "couts_achat",
+      "sourceColumn": "ligne_id",
+      "targetTable": "lignes_commande",
+      "targetColumn": "ligne_id",
+      "cardinality": "1:1",
+      "coverage": 1.0,
+      "nameHint": true
+    },
+    {
+      "sourceTable": "couts_achat",
+      "sourceColumn": "ligne_id",
+      "targetTable": "tarification_lignes",
+      "targetColumn": "ligne_id",
+      "cardinality": "1:1",
+      "coverage": 1.0,
+      "nameHint": true
+    },
+    {
+      "sourceTable": "expeditions",
+      "sourceColumn": "ligne_id",
+      "targetTable": "couts_achat",
+      "targetColumn": "ligne_id",
+      "cardinality": "N:1",
+      "coverage": 0.9715,
+      "nameHint": true
+    },
+    {
+      "sourceTable": "expeditions",
+      "sourceColumn": "ligne_id",
+      "targetTable": "lignes_commande",
+      "targetColumn": "ligne_id",
+      "cardinality": "N:1",
+      "coverage": 0.9995,
+      "nameHint": true
+    },
+    {
+      "sourceTable": "expeditions",
+      "sourceColumn": "ligne_id",
+      "targetTable": "tarification_lignes",
+      "targetColumn": "ligne_id",
+      "cardinality": "N:1",
+      "coverage": 0.9995,
+      "nameHint": true
+    },
+    {
+      "sourceTable": "lignes_commande",
+      "sourceColumn": "commande_id",
+      "targetTable": "commandes",
+      "targetColumn": "commande_id",
+      "cardinality": "N:1",
+      "coverage": 1.0,
+      "nameHint": true
+    },
+    {
+      "sourceTable": "lignes_commande",
+      "sourceColumn": "ligne_id",
+      "targetTable": "couts_achat",
+      "targetColumn": "ligne_id",
+      "cardinality": "1:1",
+      "coverage": 0.9719,
+      "nameHint": true
+    },
+    {
+      "sourceTable": "lignes_commande",
+      "sourceColumn": "ligne_id",
+      "targetTable": "tarification_lignes",
+      "targetColumn": "ligne_id",
+      "cardinality": "1:1",
+      "coverage": 1.0,
+      "nameHint": true
+    },
+    {
+      "sourceTable": "lignes_commande",
+      "sourceColumn": "produit_code",
+      "targetTable": "produits",
+      "targetColumn": "produit_code",
+      "cardinality": "N:1",
+      "coverage": 1.0,
+      "nameHint": true
+    },
+    {
+      "sourceTable": "stocks_journaliers",
+      "sourceColumn": "produit_code",
+      "targetTable": "produits",
+      "targetColumn": "produit_code",
+      "cardinality": "N:1",
+      "coverage": 1.0,
+      "nameHint": true
+    },
+    {
+      "sourceTable": "tarification_lignes",
+      "sourceColumn": "ligne_id",
+      "targetTable": "couts_achat",
+      "targetColumn": "ligne_id",
+      "cardinality": "1:1",
+      "coverage": 0.9719,
+      "nameHint": true
+    },
+    {
+      "sourceTable": "tarification_lignes",
+      "sourceColumn": "ligne_id",
+      "targetTable": "lignes_commande",
+      "targetColumn": "ligne_id",
+      "cardinality": "1:1",
+      "coverage": 1.0,
+      "nameHint": true
+    }
+  ],
+  "rejectedAssembledFacts": [],
+  "tokenUsage": {
+    "inputTokens": 5203,
+    "outputTokens": 1043
+  },
+  "factTableHints": [],
+  "models": [
+    {
+      "factTable": "fait_marge_ligne_commande",
+      "starFactTable": "fait_marge_ligne_commande__fact",
+      "hint": "Le grain demande est la ligne de commande : chaque ligne represente un produit vendu dans une commande, et c'est a ce niveau que l'on veut analyser la marge brute (CA, TVA, cout d'achat, transport, frais de port). Les mesures sont reparties entre tarification_lignes (CA HT, TVA), couts_achat (cout d'achat), expeditions (cout transport, poids, plus fin donc agrege par ligne), et commandes (frais de port, client, canal, date, plus grossier donc a allouer).",
+      "columnRolesReasoning": null,
+      "verdict": "needs_review",
+      "warnings": [
+        "reconciliation de cout_transport : 171064.90 dans le fait assemble contre 171102.95 dans expeditions.cout_transport (ecart -38.05, 0.02%) : des lignes de expeditions ne se rattachent a aucune ligne de lignes_commande",
+        "reconciliation de poids_kg : 134898.91 dans le fait assemble contre 134914.31 dans expeditions.poids_kg (ecart -15.40, 0.01%) : des lignes de expeditions ne se rattachent a aucune ligne de lignes_commande"
+      ],
+      "grain": {
+        "grainColumns": [
+          "commande_id",
+          "produit_code",
+          "client_id",
+          "canal",
+          "date_commande"
+        ],
+        "totalRows": 7403,
+        "distinctTuples": 7403,
+        "unknownKeyRows": 0,
+        "completingColumns": [],
+        "duplicateRows": 0,
+        "isUnique": true
+      },
+      "foreignKeys": [
+        {
+          "sourceColumn": "commande_id",
+          "targetTable": "commandes",
+          "targetColumn": "commande_id",
+          "joinSuccessRatio": 1.0,
+          "nameHint": true,
+          "ambiguous": false,
+          "alternatives": []
+        },
+        {
+          "sourceColumn": "produit_code",
+          "targetTable": "produits",
+          "targetColumn": "produit_code",
+          "joinSuccessRatio": 1.0,
+          "nameHint": true,
+          "ambiguous": false,
+          "alternatives": []
+        },
+        {
+          "sourceColumn": "client_id",
+          "targetTable": "clients",
+          "targetColumn": "client_id",
+          "joinSuccessRatio": 1.0,
+          "nameHint": true,
+          "ambiguous": false,
+          "alternatives": []
+        }
+      ],
+      "generatedDimensions": [
+        {
+          "tableName": "fait_marge_ligne_commande__dim_date",
+          "keyColumn": "date_key",
+          "attributeColumns": [
+            "annee",
+            "trimestre",
+            "mois",
+            "jour",
+            "jour_semaine"
+          ],
+          "rowCount": 7403,
+          "isDate": true,
+          "roleColumns": [
+            "date_commande"
+          ]
+        },
+        {
+          "tableName": "fait_marge_ligne_commande__dim_canal",
+          "keyColumn": "canal",
+          "attributeColumns": [],
+          "rowCount": 3,
+          "isDate": false,
+          "roleColumns": [
+            "canal"
+          ]
+        }
+      ],
+      "measures": [
+        "quantite",
+        "montant_ht",
+        "montant_tva",
+        "cout_achat",
+        "cout_transport",
+        "poids_kg",
+        "frais_port"
+      ],
+      "degenerateColumns": [
+        "ligne_id"
+      ],
+      "technicalColumns": [],
+      "columns": [
+        {
+          "columnName": "ligne_id",
+          "inferredType": "numeric",
+          "sqlType": "BIGINT",
+          "totalCount": 7403,
+          "nullCount": 0,
+          "distinctCount": 7403,
+          "role": "degenerate",
+          "fallbackRole": "degenerate",
+          "requiresNameHint": true,
+          "reason": "unique sur chaque ligne du fait : identifiant de ligne, hors grain",
+          "linkedTo": null,
+          "dimensionTable": null,
+          "initialRole": "row_identifier",
+          "roleSource": "statistiques"
+        },
+        {
+          "columnName": "commande_id",
+          "inferredType": "numeric",
+          "sqlType": "BIGINT",
+          "totalCount": 7403,
+          "nullCount": 0,
+          "distinctCount": 2400,
+          "role": "foreign_key",
+          "fallbackRole": "key_candidate",
+          "requiresNameHint": false,
+          "reason": "100% des valeurs retrouvees dans commandes.commande_id (noms concordants)",
+          "linkedTo": "commandes.commande_id",
+          "dimensionTable": null,
+          "initialRole": "key_candidate",
+          "roleSource": "statistiques"
+        },
+        {
+          "columnName": "produit_code",
+          "inferredType": "string",
+          "sqlType": "VARCHAR",
+          "totalCount": 7403,
+          "nullCount": 0,
+          "distinctCount": 150,
+          "role": "foreign_key",
+          "fallbackRole": "key_candidate",
+          "requiresNameHint": false,
+          "reason": "100% des valeurs retrouvees dans produits.produit_code (noms concordants)",
+          "linkedTo": "produits.produit_code",
+          "dimensionTable": null,
+          "initialRole": "key_candidate",
+          "roleSource": "LLM"
+        },
+        {
+          "columnName": "quantite",
+          "inferredType": "numeric",
+          "sqlType": "BIGINT",
+          "totalCount": 7403,
+          "nullCount": 0,
+          "distinctCount": 40,
+          "role": "measure",
+          "fallbackRole": "measure",
+          "requiresNameHint": true,
+          "reason": "entier sans lien corrobore par le nom vers une autre table : mesure",
+          "linkedTo": null,
+          "dimensionTable": null,
+          "initialRole": "key_candidate",
+          "roleSource": "statistiques"
+        },
+        {
+          "columnName": "montant_ht",
+          "inferredType": "numeric",
+          "sqlType": "DOUBLE",
+          "totalCount": 7403,
+          "nullCount": 0,
+          "distinctCount": 4855,
+          "role": "measure",
+          "fallbackRole": "measure",
+          "requiresNameHint": false,
+          "reason": "mesure (LLM)",
+          "linkedTo": null,
+          "dimensionTable": null,
+          "initialRole": "measure",
+          "roleSource": "LLM"
+        },
+        {
+          "columnName": "montant_tva",
+          "inferredType": "numeric",
+          "sqlType": "DOUBLE",
+          "totalCount": 7403,
+          "nullCount": 0,
+          "distinctCount": 4015,
+          "role": "measure",
+          "fallbackRole": "measure",
+          "requiresNameHint": false,
+          "reason": "mesure (LLM)",
+          "linkedTo": null,
+          "dimensionTable": null,
+          "initialRole": "measure",
+          "roleSource": "LLM"
+        },
+        {
+          "columnName": "cout_achat",
+          "inferredType": "numeric",
+          "sqlType": "DOUBLE",
+          "totalCount": 7403,
+          "nullCount": 208,
+          "distinctCount": 6124,
+          "role": "measure",
+          "fallbackRole": "measure",
+          "requiresNameHint": false,
+          "reason": "mesure (LLM)",
+          "linkedTo": null,
+          "dimensionTable": null,
+          "initialRole": "measure",
+          "roleSource": "LLM"
+        },
+        {
+          "columnName": "client_id",
+          "inferredType": "numeric",
+          "sqlType": "BIGINT",
+          "totalCount": 7403,
+          "nullCount": 0,
+          "distinctCount": 299,
+          "role": "foreign_key",
+          "fallbackRole": "key_candidate",
+          "requiresNameHint": false,
+          "reason": "100% des valeurs retrouvees dans clients.client_id (noms concordants)",
+          "linkedTo": "clients.client_id",
+          "dimensionTable": null,
+          "initialRole": "key_candidate",
+          "roleSource": "LLM"
+        },
+        {
+          "columnName": "canal",
+          "inferredType": "string",
+          "sqlType": "VARCHAR",
+          "totalCount": 7403,
+          "nullCount": 0,
+          "distinctCount": 3,
+          "role": "extracted_key",
+          "fallbackRole": "key_candidate",
+          "requiresNameHint": false,
+          "reason": "aucune table a laquelle se lier : extraite dans fait_marge_ligne_commande__dim_canal",
+          "linkedTo": null,
+          "dimensionTable": "fait_marge_ligne_commande__dim_canal",
+          "initialRole": "key_candidate",
+          "roleSource": "LLM"
+        },
+        {
+          "columnName": "date_commande",
+          "inferredType": "date",
+          "sqlType": "DATE",
+          "totalCount": 7403,
+          "nullCount": 0,
+          "distinctCount": 180,
+          "role": "extracted_key",
+          "fallbackRole": "date",
+          "requiresNameHint": false,
+          "reason": "date : jointe au calendrier partage fait_marge_ligne_commande__dim_date",
+          "linkedTo": null,
+          "dimensionTable": "fait_marge_ligne_commande__dim_date",
+          "initialRole": "date",
+          "roleSource": "LLM"
+        },
+        {
+          "columnName": "cout_transport",
+          "inferredType": "numeric",
+          "sqlType": "DOUBLE",
+          "totalCount": 7403,
+          "nullCount": 0,
+          "distinctCount": 3002,
+          "role": "measure",
+          "fallbackRole": "measure",
+          "requiresNameHint": false,
+          "reason": "mesure (LLM)",
+          "linkedTo": null,
+          "dimensionTable": null,
+          "initialRole": "measure",
+          "roleSource": "LLM"
+        },
+        {
+          "columnName": "poids_kg",
+          "inferredType": "numeric",
+          "sqlType": "DOUBLE",
+          "totalCount": 7403,
+          "nullCount": 0,
+          "distinctCount": 3725,
+          "role": "measure",
+          "fallbackRole": "measure",
+          "requiresNameHint": false,
+          "reason": "mesure (LLM)",
+          "linkedTo": null,
+          "dimensionTable": null,
+          "initialRole": "measure",
+          "roleSource": "LLM"
+        },
+        {
+          "columnName": "frais_port",
+          "inferredType": "numeric",
+          "sqlType": "DOUBLE",
+          "totalCount": 7403,
+          "nullCount": 0,
+          "distinctCount": 165,
+          "role": "measure",
+          "fallbackRole": "measure",
+          "requiresNameHint": false,
+          "reason": "mesure (LLM)",
+          "linkedTo": null,
+          "dimensionTable": null,
+          "initialRole": "measure",
+          "roleSource": "LLM"
+        }
+      ],
+      "assembly": {
+        "name": "fait_marge_ligne_commande",
+        "anchorTable": "lignes_commande",
+        "tableName": "fait_marge_ligne_commande",
+        "justification": "Le grain demande est la ligne de commande : chaque ligne represente un produit vendu dans une commande, et c'est a ce niveau que l'on veut analyser la marge brute (CA, TVA, cout d'achat, transport, frais de port). Les mesures sont reparties entre tarification_lignes (CA HT, TVA), couts_achat (cout d'achat), expeditions (cout transport, poids, plus fin donc agrege par ligne), et commandes (frais de port, client, canal, date, plus grossier donc a allouer).",
+        "expectedGrain": "Une ligne = un produit (produit_code) vendu dans une commande (lignes_commande.ligne_id), avec sa marge brute (CA HT, TVA, cout d'achat, cout de transport agrege, poids agrege, frais de port alloues), analysable par client, produit, canal et date de commande.",
+        "anchorRowCount": 7403,
+        "rowCount": 7403,
+        "sources": [
+          {
+            "table": "tarification_lignes",
+            "relation": "meme_grain",
+            "path": [
+              "lignes_commande.ligne_id -> tarification_lignes.ligne_id (1:1)"
+            ],
+            "towardsAnchor": false,
+            "alternatives": []
+          },
+          {
+            "table": "couts_achat",
+            "relation": "meme_grain",
+            "path": [
+              "lignes_commande.ligne_id -> couts_achat.ligne_id (1:1)"
+            ],
+            "towardsAnchor": false,
+            "alternatives": []
+          },
+          {
+            "table": "expeditions",
+            "relation": "plus_fine",
+            "path": [
+              "expeditions.ligne_id -> lignes_commande.ligne_id (N:1)"
+            ],
+            "towardsAnchor": true,
+            "alternatives": []
+          },
+          {
+            "table": "commandes",
+            "relation": "plus_grossiere",
+            "path": [
+              "lignes_commande.commande_id -> commandes.commande_id (N:1)"
+            ],
+            "towardsAnchor": false,
+            "alternatives": []
+          },
+          {
+            "table": "lignes_commande",
+            "relation": "ancre",
+            "path": [],
+            "towardsAnchor": false,
+            "alternatives": []
+          }
+        ],
+        "columns": [
+          {
+            "name": "montant_ht",
+            "sourceTable": "tarification_lignes",
+            "sourceColumn": "montant_ht",
+            "kind": "mesure",
+            "relation": "meme_grain",
+            "operation": "copiee (meme grain)",
+            "additivity": "additive",
+            "nullRows": 0
+          },
+          {
+            "name": "montant_tva",
+            "sourceTable": "tarification_lignes",
+            "sourceColumn": "montant_tva",
+            "kind": "mesure",
+            "relation": "meme_grain",
+            "operation": "copiee (meme grain)",
+            "additivity": "additive",
+            "nullRows": 0
+          },
+          {
+            "name": "cout_achat",
+            "sourceTable": "couts_achat",
+            "sourceColumn": "cout_achat",
+            "kind": "mesure",
+            "relation": "meme_grain",
+            "operation": "copiee (meme grain)",
+            "additivity": "additive",
+            "nullRows": 208
+          },
+          {
+            "name": "cout_transport",
+            "sourceTable": "expeditions",
+            "sourceColumn": "cout_transport",
+            "kind": "mesure",
+            "relation": "plus_fine",
+            "operation": "sum par ligne du grain",
+            "additivity": "additive",
+            "nullRows": 0
+          },
+          {
+            "name": "poids_kg",
+            "sourceTable": "expeditions",
+            "sourceColumn": "poids_kg",
+            "kind": "mesure",
+            "relation": "plus_fine",
+            "operation": "sum par ligne du grain",
+            "additivity": "additive",
+            "nullRows": 0
+          },
+          {
+            "name": "client_id",
+            "sourceTable": "commandes",
+            "sourceColumn": "client_id",
+            "kind": "cle",
+            "relation": "plus_grossiere",
+            "operation": "copiee",
+            "additivity": null,
+            "nullRows": 0
+          },
+          {
+            "name": "canal",
+            "sourceTable": "commandes",
+            "sourceColumn": "canal",
+            "kind": "cle",
+            "relation": "plus_grossiere",
+            "operation": "copiee",
+            "additivity": null,
+            "nullRows": 0
+          },
+          {
+            "name": "date_commande",
+            "sourceTable": "commandes",
+            "sourceColumn": "date_commande",
+            "kind": "cle",
+            "relation": "plus_grossiere",
+            "operation": "copiee",
+            "additivity": null,
+            "nullRows": 0
+          },
+          {
+            "name": "frais_port",
+            "sourceTable": "commandes",
+            "sourceColumn": "frais_port",
+            "kind": "mesure",
+            "relation": "plus_grossiere",
+            "operation": "repartie au prorata de montant_ht",
+            "additivity": "additive",
+            "nullRows": 0
+          }
+        ],
+        "refused": [],
+        "reconciliations": [
+          {
+            "column": "montant_ht",
+            "source": "tarification_lignes.montant_ht",
+            "sourceTotal": 2545324.8099999945,
+            "assembledTotal": 2545324.809999993,
+            "delta": -1.3969838619232178e-09,
+            "ok": true
+          },
+          {
+            "column": "montant_tva",
+            "source": "tarification_lignes.montant_tva",
+            "sourceTotal": 359647.69000000204,
+            "assembledTotal": 359647.68999999913,
+            "delta": -2.9103830456733704e-09,
+            "ok": true
+          },
+          {
+            "column": "cout_achat",
+            "source": "couts_achat.cout_achat",
+            "sourceTotal": 1555876.420000005,
+            "assembledTotal": 1555876.420000006,
+            "delta": 9.313225746154785e-10,
+            "ok": true
+          },
+          {
+            "column": "cout_transport",
+            "source": "expeditions.cout_transport",
+            "sourceTotal": 171102.94999999966,
+            "assembledTotal": 171064.90000000026,
+            "delta": -38.04999999940628,
+            "ok": false
+          },
+          {
+            "column": "poids_kg",
+            "source": "expeditions.poids_kg",
+            "sourceTotal": 134914.31200000094,
+            "assembledTotal": 134898.9120000009,
+            "delta": -15.400000000023283,
+            "ok": false
+          },
+          {
+            "column": "frais_port",
+            "source": "commandes.frais_port",
+            "sourceTotal": 3233.800000000017,
+            "assembledTotal": 3233.800000000014,
+            "delta": -3.183231456205249e-12,
+            "ok": true
+          }
+        ],
+        "warnings": [
+          "reconciliation de cout_transport : 171064.90 dans le fait assemble contre 171102.95 dans expeditions.cout_transport (ecart -38.05, 0.02%) : des lignes de expeditions ne se rattachent a aucune ligne de lignes_commande",
+          "reconciliation de poids_kg : 134898.91 dans le fait assemble contre 134914.31 dans expeditions.poids_kg (ecart -15.40, 0.01%) : des lignes de expeditions ne se rattachent a aucune ligne de lignes_commande"
+        ],
+        "consumedTables": [
+          "lignes_commande",
+          "tarification_lignes",
+          "couts_achat",
+          "expeditions"
+        ],
+        "error": null,
+        "declaredKeys": [
+          "produit_code"
+        ],
+        "declaredMeasures": []
+      }
+    }
+  ]
+}

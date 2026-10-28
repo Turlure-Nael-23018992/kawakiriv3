@@ -1,0 +1,7 @@
+duckdb
+pandas
+pydantic>=2
+requests
+clickhouse-connect
+PyMySQL
+pytest

@@ -1,0 +1,157 @@
+{
+  "tables": [
+    "clients",
+    "commandes",
+    "couts_achat",
+    "expeditions",
+    "lignes_commande",
+    "produits",
+    "stocks_journaliers",
+    "tarification_lignes"
+  ],
+  "businessNeed": "Analyser la marge brute de chaque ligne de commande.",
+  "contextType": null,
+  "factTableSource": "caller",
+  "factHintError": null,
+  "factHintReasoning": null,
+  "rejectedHintTables": [],
+  "columnRolesByTable": {},
+  "columnRolesErrors": {},
+  "rejectedColumnNames": {},
+  "tokenUsage": null,
+  "factTableHints": [
+    {
+      "tableName": "lignes_commande",
+      "justification": "imposee par l'appelant",
+      "expectedGrain": null
+    }
+  ],
+  "models": [
+    {
+      "factTable": "lignes_commande",
+      "starFactTable": "lignes_commande__fact",
+      "hint": "imposee par l'appelant",
+      "columnRolesReasoning": null,
+      "verdict": "needs_review",
+      "warnings": [
+        "expeditions.ligne_id (10949 lignes) reference lignes_commande.ligne_id (7403 lignes) : le grain demande est peut-etre celui de expeditions"
+      ],
+      "grain": {
+        "grainColumns": [
+          "ligne_id",
+          "commande_id",
+          "produit_code"
+        ],
+        "totalRows": 7403,
+        "distinctTuples": 7403,
+        "unknownKeyRows": 0,
+        "completingColumns": [],
+        "duplicateRows": 0,
+        "isUnique": true
+      },
+      "foreignKeys": [
+        {
+          "sourceColumn": "ligne_id",
+          "targetTable": "tarification_lignes",
+          "targetColumn": "ligne_id",
+          "joinSuccessRatio": 1.0,
+          "nameHint": true,
+          "ambiguous": false,
+          "alternatives": [
+            "couts_achat.ligne_id"
+          ]
+        },
+        {
+          "sourceColumn": "commande_id",
+          "targetTable": "commandes",
+          "targetColumn": "commande_id",
+          "joinSuccessRatio": 1.0,
+          "nameHint": true,
+          "ambiguous": false,
+          "alternatives": []
+        },
+        {
+          "sourceColumn": "produit_code",
+          "targetTable": "produits",
+          "targetColumn": "produit_code",
+          "joinSuccessRatio": 1.0,
+          "nameHint": true,
+          "ambiguous": false,
+          "alternatives": []
+        }
+      ],
+      "generatedDimensions": [],
+      "measures": [
+        "quantite"
+      ],
+      "degenerateColumns": [],
+      "technicalColumns": [],
+      "columns": [
+        {
+          "columnName": "ligne_id",
+          "inferredType": "numeric",
+          "sqlType": "BIGINT",
+          "totalCount": 7403,
+          "nullCount": 0,
+          "distinctCount": 7403,
+          "role": "foreign_key",
+          "fallbackRole": "degenerate",
+          "requiresNameHint": true,
+          "reason": "100% des valeurs retrouvees dans tarification_lignes.ligne_id (noms concordants)",
+          "linkedTo": "tarification_lignes.ligne_id",
+          "dimensionTable": null,
+          "initialRole": "row_identifier",
+          "roleSource": "statistiques"
+        },
+        {
+          "columnName": "commande_id",
+          "inferredType": "numeric",
+          "sqlType": "BIGINT",
+          "totalCount": 7403,
+          "nullCount": 0,
+          "distinctCount": 2400,
+          "role": "foreign_key",
+          "fallbackRole": "key_candidate",
+          "requiresNameHint": false,
+          "reason": "100% des valeurs retrouvees dans commandes.commande_id (noms concordants)",
+          "linkedTo": "commandes.commande_id",
+          "dimensionTable": null,
+          "initialRole": "key_candidate",
+          "roleSource": "statistiques"
+        },
+        {
+          "columnName": "produit_code",
+          "inferredType": "string",
+          "sqlType": "VARCHAR",
+          "totalCount": 7403,
+          "nullCount": 0,
+          "distinctCount": 150,
+          "role": "foreign_key",
+          "fallbackRole": "key_candidate",
+          "requiresNameHint": false,
+          "reason": "100% des valeurs retrouvees dans produits.produit_code (noms concordants)",
+          "linkedTo": "produits.produit_code",
+          "dimensionTable": null,
+          "initialRole": "key_candidate",
+          "roleSource": "statistiques"
+        },
+        {
+          "columnName": "quantite",
+          "inferredType": "numeric",
+          "sqlType": "BIGINT",
+          "totalCount": 7403,
+          "nullCount": 0,
+          "distinctCount": 40,
+          "role": "measure",
+          "fallbackRole": "measure",
+          "requiresNameHint": true,
+          "reason": "entier sans lien corrobore par le nom vers une autre table : mesure",
+          "linkedTo": null,
+          "dimensionTable": null,
+          "initialRole": "key_candidate",
+          "roleSource": "statistiques"
+        }
+      ]
+    }
+  ]
+}

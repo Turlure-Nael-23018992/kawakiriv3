@@ -1,0 +1,15 @@
+{
+  "source": {
+    "kind": "csv",
+    "path": "examples/commerce"
+  },
+  "contextType": "enseigne de mobilier et decoration, ventes web, magasin et telephone",
+  "factTables": [
+    "lignes_commande",
+    "retours",
+    "commandes"
+  ],
+  "duckDbPath": "output/commerce_impose.duckdb",
+  "outputDir": "output/commerce_impose",
+  "columnHint": false
+}

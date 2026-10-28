@@ -1,0 +1,13 @@
+{
+  "source": {
+    "kind": "starrocks",
+    "host": "localhost",
+    "port": 9030,
+    "user": "root",
+    "password": "",
+    "database": "ventes"
+  },
+  "businessNeed": "Analyser le chiffre d'affaires par client et par produit.",
+  "duckDbPath": "output/starrocks.duckdb",
+  "outputDir": "output/starrocks"
+}

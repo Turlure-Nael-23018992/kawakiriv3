@@ -1,0 +1,41 @@
+{
+  "source": {
+    "kind": "csv",
+    "path": "examples/tokenUsage",
+    "delimiter": ","
+  },
+  "tables": {
+    "token_usage": null,
+    "users": ["id", "uuid", "is_active", "is_verified", "is_accepted", "is_superuser", "onboarding_completed", "auth_provider", "deleted", "created_at", "updated_at"]
+  },
+  "contextType": "plateforme SaaS d'assistants IA : journal de consommation de tokens LLM par utilisateur et par societe",
+  "businessNeed": "Analyser la consommation de tokens LLM (tokens en entree, en sortie, en cache et de creation de cache) par utilisateur, societe, type d'usage et jour.",
+  "tableDescriptions": {
+    "token_usage": {
+      "description": "Une ligne par appel LLM facture : qui l'a fait, pour quel usage, combien de tokens.",
+      "columns": {
+        "company_id": "societe cliente a laquelle l'appel est facture",
+        "user_id": "utilisateur qui a declenche l'appel (users.id)",
+        "type": "type d'usage de l'appel (documentation, ...)",
+        "input_tokens": "tokens envoyes au modele",
+        "output_tokens": "tokens generes par le modele",
+        "cached_tokens": "tokens lus depuis le cache de prompt",
+        "cache_creation_tokens": "tokens ecrits dans le cache de prompt",
+        "creation_date": "horodatage de l'appel"
+      }
+    },
+    "users": {
+      "description": "Comptes utilisateurs de la plateforme."
+    }
+  },
+  "columnRoles": {
+    "token_usage": {
+      "keys": ["company_id", "user_id"],
+      "measures": ["input_tokens", "output_tokens", "cached_tokens", "cache_creation_tokens"]
+    }
+  },
+  "forbiddenLinks": ["token_usage.company_id -> users.id"],
+  "linkCachePath": "output/token_usage_link_verdicts.json",
+  "duckDbPath": "output/token_usage.duckdb",
+  "outputDir": "output/token_usage"
+}

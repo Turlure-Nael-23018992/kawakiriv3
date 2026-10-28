@@ -1,0 +1,12 @@
+__pycache__/
+*.egg-info/
+.pytest_cache/
+output/
+.env
+# Donnees reelles (extrait JDE) : ne jamais versionner
+/output.csv
+examples/jde_f03b11/*.csv
+examples/jde_f03b11/raw/
+
+# Donnees reelles (comptes utilisateurs avec emails et hash de mots de passe) : ne jamais versionner
+examples/tokenUsage/

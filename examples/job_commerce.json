@@ -1,0 +1,10 @@
+{
+  "source": {
+    "kind": "csv",
+    "path": "examples/commerce"
+  },
+  "contextType": "enseigne de mobilier et decoration, ventes web, magasin et telephone",
+  "businessNeed": "Analyser le chiffre d'affaires, les quantites vendues et les remises par produit, commande, entrepot, promotion et jour de livraison, ainsi que les retours clients : quantites retournees et montants rembourses par motif et par jour.",
+  "duckDbPath": "output/commerce.duckdb",
+  "outputDir": "output/commerce"
+}

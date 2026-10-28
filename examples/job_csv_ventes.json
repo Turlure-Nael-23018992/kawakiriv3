@@ -1,0 +1,7 @@
+{
+  "source": {"kind": "csv", "path": "examples/ventes"},
+  "businessNeed": "Analyser le chiffre d'affaires et les quantites vendues par client, produit, canal et jour.",
+  "contextType": "commerce omnicanal",
+  "duckDbPath": "output/v3_ventes.duckdb",
+  "outputDir": "output"
+}

@@ -1,0 +1,10 @@
+{
+  "source": {
+    "kind": "csv",
+    "path": "examples/marge"
+  },
+  "contextType": "grossiste B2B en fournitures de bureau, ventes web, par commercial et par telephone",
+  "businessNeed": "Analyser la marge brute de chaque ligne de commande : chiffre d'affaires HT, TVA, cout d'achat, couts de transport et poids expedie, ainsi que les frais de port factures au client, par client, produit, canal et date de commande.",
+  "duckDbPath": "output/marge.duckdb",
+  "outputDir": "output/marge"
+}
