@@ -1,0 +1,7 @@
+plan_id,nom_plan,palier,tarif_mensuel
+1,Starter,entree,19.0
+2,Starter Plus,entree,29.0
+3,Pro,milieu,59.0
+4,Pro Max,milieu,89.0
+5,Business,haut,149.0
+6,Enterprise,haut,299.0

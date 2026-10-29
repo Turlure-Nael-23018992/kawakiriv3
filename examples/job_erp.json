@@ -1,0 +1,20 @@
+{
+  "source": {
+    "kind": "csv",
+    "path": "examples/erp"
+  },
+  "contextType": "ERP generaliste multi-societes (ventes, achats, stock, comptabilite, creances, dettes)",
+  "businessNeed": "Analyser l'activite complete : ventes et marge par client/produit, achats par fournisseur, mouvements de stock, ecritures comptables, et creances/dettes ouvertes par tiers.",
+  "factTables": [
+    "ventes_lignes",
+    "achats_lignes",
+    "mouvements_stock",
+    "ecritures_gl",
+    "factures_clients",
+    "factures_fournisseurs"
+  ],
+  "columnHint": false,
+  "linkCachePath": "output/erp_link_verdicts.json",
+  "duckDbPath": "output/erp.duckdb",
+  "outputDir": "output/erp"
+}

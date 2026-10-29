@@ -68,7 +68,10 @@ class ColumnClassifier:
 
     def classify(self):
         """One `ColumnAssessment` per column, in table order."""
-        return [self._assess(columnName) for columnName in self.profiler.columns]
+        assessments = [self._assess(columnName) for columnName in self.profiler.columns]
+        for assessment in assessments:
+            assessment.additivity = self.columnRoles.additivity.get(assessment.columnName)
+        return assessments
 
     def _assess(self, columnName):
         profiling = self.profiler.getAggProfiling(columnName)
@@ -91,6 +94,10 @@ class ColumnClassifier:
 
         if imposedRole == roles.EXCLUDED:
             return assessment(TECHNICAL, f"exclue ({imposedSource}) : colonne technique", source=imposedSource)
+        if imposedRole == roles.DEGENERATE:
+            return assessment(
+                DEGENERATE, f"degeneree ({imposedSource}) : reste dans le fait, hors grain", source=imposedSource,
+            )
         if imposedRole is None and looksTechnical(columnName):
             return assessment(
                 TECHNICAL, "nommee comme une metadonnee de chargement : exclue", source=SOURCE_NAME_PATTERN,

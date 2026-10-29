@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "csv",
+    "path": "examples/erp"
+  },
+  "contextType": "ERP generaliste multi-societes (ventes, achats, stock, comptabilite, creances, dettes)",
+  "businessNeed": "Analyser le chiffre d'affaires par client et par produit, et l'encours des creances clients par societe et par statut de paiement.",
+  "linkCachePath": "output/erp_link_verdicts.json",
+  "duckDbPath": "output/erp_hint.duckdb",
+  "outputDir": "output/erp_hint"
+}

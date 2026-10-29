@@ -7,14 +7,13 @@ catalog and an external one (Hive, Iceberg, JDBC...: `catalog` set).
 """
 from __future__ import annotations
 
-from decimal import Decimal
-
 import pandas as pd
 
-from kawakiriv3.Sources.sourceConnector import SourceConnector
+from kawakiriv3.Sources.sourceConnector import SourceConnector, normalizeObjectColumns
 
 DEFAULT_PORT = 9030
 FETCH_BATCH_ROWS = 50_000
+CONNECT_TIMEOUT_SECONDS = 15
 
 
 def _backquote(identifier):
@@ -47,7 +46,7 @@ class StarRocksSource(SourceConnector):
                 # SSCursor streams the rows instead of buffering a whole table client-side.
                 connection = pymysql.connect(
                     host=host, port=int(port), user=user, password=password, charset="utf8mb4",
-                    cursorclass=pymysql.cursors.SSCursor,
+                    connect_timeout=CONNECT_TIMEOUT_SECONDS, cursorclass=pymysql.cursors.SSCursor,
                 )
             except pymysql.err.OperationalError as exc:
                 raise ConnectionError(f"StarRocks injoignable a {host}:{port} : {exc}") from exc
@@ -75,8 +74,10 @@ class StarRocksSource(SourceConnector):
             self._columnsCache[tableName] = [row[0] for row in self._rows(f"DESC {self._qualified(tableName)}")]
         return self._columnsCache[tableName]
 
-    def fetchDataFrame(self, tableName, columnNames):
+    def fetchDataFrame(self, tableName, columnNames, rowFilter=None):
         sql = f"SELECT {', '.join(_backquote(c) for c in columnNames)} FROM {self._qualified(tableName)}"
+        if rowFilter:
+            sql += f" WHERE {rowFilter}"
         if self.rowLimit is not None:
             sql += f" LIMIT {int(self.rowLimit)}"
         rows = []
@@ -87,14 +88,9 @@ class StarRocksSource(SourceConnector):
                 if not batch:
                     break
                 rows.extend(batch)
-        frame = pd.DataFrame(rows, columns=list(columnNames))
         # DECIMAL columns come back as Python Decimal objects: an `object`
         # column DuckDB would not read as a number.
-        for column in frame.columns:
-            values = frame[column].dropna()
-            if not values.empty and all(isinstance(v, Decimal) for v in values.head(100)):
-                frame[column] = frame[column].astype(float)
-        return frame
+        return normalizeObjectColumns(pd.DataFrame(rows, columns=list(columnNames)))
 
     def close(self):
         close = getattr(self.connection, "close", None)

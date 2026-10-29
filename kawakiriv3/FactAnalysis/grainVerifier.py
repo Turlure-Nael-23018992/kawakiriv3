@@ -11,10 +11,16 @@ A transaction fact can legitimately break uniqueness (two identical sales on
 the same day, same customer, same product): the verdict says so with counts
 instead of assuming it, and looks for the degenerate column (an order number,
 a ticket reference) that would make the grain unique.
+
+When every duplicate repeats inside one document (the same item scanned twice
+on one ticket: same keys, same ticket number, two line numbers), the fact is
+at the line grain and a line number completes it: `repeatedWithin` names that
+document column. Duplicates across documents, or without one, never qualify.
 """
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from typing import Optional
 
 from kawakiriv3.FactAnalysis.columnAssessment import DEGENERATE, DESCRIPTIVE, GRAIN_ROLES
 from kawakiriv3.Sources.sourceConnector import quoteIdentifier
@@ -27,13 +33,16 @@ class GrainVerdict:
     unknownKeyRows: rows with at least one unknown (null) key -- information,
         never a reason for the grain not to be unique.
     completingColumns: degenerate columns that, added to the grain, make it
-        unique -- only searched when the grain alone isn't."""
+        unique -- only searched when the grain alone isn't.
+    repeatedWithin: the degenerate document column (a ticket number) every
+        duplicate repeats inside, when a completing column exists."""
 
     grainColumns: list
     totalRows: int
     distinctTuples: int
     unknownKeyRows: int = 0
     completingColumns: list = field(default_factory=list)
+    repeatedWithin: Optional[str] = None
 
     @property
     def duplicateRows(self):
@@ -63,7 +72,22 @@ class GrainVerifier:
                 column for column in self._degenerateColumns()
                 if self._counts(grainColumns + [column])[1] == totalRows
             ]
+            if verdict.completingColumns:
+                verdict.repeatedWithin = next((
+                    column for column in self._degenerateColumns()
+                    if column not in verdict.completingColumns
+                    and self._counts(grainColumns + [column])[1] == distinctTuples
+                    and self._duplicateGroupsWithout(grainColumns, column) == 0
+                ), None)
         return verdict
+
+    def _duplicateGroupsWithout(self, grainColumns, column):
+        """Duplicate groups of `grainColumns + [column]` whose `column` is null."""
+        cols = ", ".join(quoteIdentifier(c) for c in grainColumns + [column])
+        return self.db.conn.execute(
+            f"SELECT COUNT(*) FROM (SELECT {cols}, COUNT(*) AS n FROM {quoteIdentifier(self.starFactTable)} "
+            f"GROUP BY ALL HAVING n > 1) WHERE {quoteIdentifier(column)} IS NULL"
+        ).fetchone()[0]
 
     def _degenerateColumns(self):
         """Descriptive text (a reference, a ticket number) first, row

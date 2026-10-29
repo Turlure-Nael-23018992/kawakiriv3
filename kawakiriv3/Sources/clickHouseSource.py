@@ -56,8 +56,10 @@ class ClickHouseSource(SourceConnector):
             self._columnsCache[tableName] = [row[0] for row in result.result_rows]
         return self._columnsCache[tableName]
 
-    def fetchDataFrame(self, tableName, columnNames):
+    def fetchDataFrame(self, tableName, columnNames, rowFilter=None):
         sql = f"SELECT {', '.join(_backquote(c) for c in columnNames)} FROM {self._qualified(tableName)}"
+        if rowFilter:
+            sql += f" WHERE {rowFilter}"
         if self.rowLimit is not None:
             sql += f" LIMIT {int(self.rowLimit)}"
         return self.client.query_df(sql)

@@ -56,14 +56,15 @@ class CsvSource(SourceConnector):
             self._columnsCache[tableName] = [row[0] for row in rows]
         return self._columnsCache[tableName]
 
-    def fetchDataFrame(self, tableName, columnNames):
+    def fetchDataFrame(self, tableName, columnNames, rowFilter=None):
         import duckdb
 
-        return duckdb.sql(
-            f"SELECT {selectColumnsSql(columnNames)} FROM {self._readCsvExpression(tableName)}"
-        ).df()
+        sql = f"SELECT {selectColumnsSql(columnNames)} FROM {self._readCsvExpression(tableName)}"
+        if rowFilter:
+            sql += f" WHERE {rowFilter}"
+        return duckdb.sql(sql).df()
 
-    def loadInto(self, db, tableName, columnNames=None, targetName=None):
+    def loadInto(self, db, tableName, columnNames=None, targetName=None, rowFilter=None):
         """Native path: `CREATE TABLE ... AS SELECT ... FROM read_csv(...)`
         straight into the run's DuckDB connection."""
         targetName = targetName or duckDbTableName(tableName)
@@ -72,8 +73,11 @@ class CsvSource(SourceConnector):
         unknown = [c for c in columnNames if c not in available]
         if unknown:
             raise ValueError(f"csv: colonnes inconnues dans {tableName!r} : {unknown}")
-        db.conn.execute(
+        sql = (
             f"CREATE OR REPLACE TABLE {quoteIdentifier(targetName)} AS "
             f"SELECT {selectColumnsSql(columnNames)} FROM {self._readCsvExpression(tableName)}"
         )
+        if rowFilter:
+            sql += f" WHERE {rowFilter}"
+        db.conn.execute(sql)
         return targetName

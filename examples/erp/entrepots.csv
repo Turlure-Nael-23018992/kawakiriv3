@@ -1,0 +1,11 @@
+entrepot_id,nom,ville,pays,type
+1,Site Nord 1,Londres,Royaume-Uni,usine
+2,Site Cypres 2,Geneve,Suisse,magasin
+3,Site Lumiere 3,Munich,Allemagne,magasin
+4,Site Boreal 4,Munich,Allemagne,plateforme_distribution
+5,Site Comptoir 5,Zurich,Suisse,plateforme_distribution
+6,Site Nord 6,Lyon,France,usine
+7,Site Nord 7,Osaka,Japon,plateforme_distribution
+8,Site Boreal 8,Chicago,Etats-Unis,magasin
+9,Site Nord 9,Lyon,France,plateforme_distribution
+10,Site Horizon 10,Chicago,Etats-Unis,usine

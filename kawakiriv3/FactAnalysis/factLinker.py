@@ -48,7 +48,11 @@ def _rank(candidate, targetConfidence):
 class FactLinker:
     """`schemaEngine`/`primaryKeyCandidatesByTable`: the run's source tables
     and their key candidates. `targetTables`: tables the fact may link to
-    (default: every table but the fact itself)."""
+    (default: every table, the fact itself included -- a self-referencing
+    column like `facture_origine_id` can then link to the fact's own key;
+    `SourceJoinEngine` never tests a column against itself, and a candidate
+    still needs the same name hint or an explicit `linkVerdicts` approval as
+    any other target, see `link()`)."""
 
     def __init__(
         self, schemaEngine, primaryKeyCandidatesByTable, factTable, assessments, targetTables=None, linkVerdicts=None,
@@ -60,10 +64,7 @@ class FactLinker:
         self.primaryKeyCandidatesByTable = primaryKeyCandidatesByTable
         self.factTable = factTable
         self.assessments = assessments
-        self.targetTables = [
-            table for table in (targetTables if targetTables is not None else schemaEngine.tableNames)
-            if table != factTable
-        ]
+        self.targetTables = list(targetTables if targetTables is not None else schemaEngine.tableNames)
 
     def link(self):
         """Returns `[ForeignKeyLink, ...]` and sets `role = FOREIGN_KEY` /
@@ -81,6 +82,16 @@ class FactLinker:
         )
         candidatesByColumn = {}
         for candidate in engine.inferSourceJoins():
+            if candidate.sourceTable == candidate.targetTable:
+                # Same safeguard as `LinkGraph.build`: a real self-reference
+                # is nullable (most rows have nothing to point at); a
+                # non-nullable column matching the fact's own (typically
+                # dense, sequential) key is coincidence, not a relation --
+                # and this engine, unlike LinkGraph's, has no deterministic
+                # stage of its own to catch it.
+                profiling = self.schemaEngine.profilers[candidate.sourceTable].getAggProfiling(candidate.sourceColumn)
+                if profiling.NullCount == 0:
+                    continue
             candidatesByColumn.setdefault(candidate.sourceColumn, []).append(candidate)
 
         links = []

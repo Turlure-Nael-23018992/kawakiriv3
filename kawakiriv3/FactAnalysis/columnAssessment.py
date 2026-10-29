@@ -20,12 +20,18 @@ SOURCE_STATISTICS = "statistiques"
 SOURCE_CALLER = "appelant"
 SOURCE_LLM = "LLM"
 SOURCE_NAME_PATTERN = "motif de nom"
+SOURCE_STAR = "etoile"               # taken over from a built star, see StarUnification/
+SOURCE_UNIFICATION = "unification"  # a key remapped to a unified dimension, a computed measure
 
 # --- final roles, once linking and extraction ran ---
 FOREIGN_KEY = "foreign_key"         # linked to an existing table's key
 EXTRACTED_KEY = "extracted_key"     # no table to link to: becomes the key of a generated dimension
 MOVED_ATTRIBUTE = "moved_attribute" # functionally determined by an extracted key: moved into its dimension
 DEGENERATE = "degenerate"           # stays on the fact, outside the grain (row identifier, descriptive text)
+
+# How a measure aggregates (`ColumnAssessment.additivity`), same words as FactAssembly's AssemblySpec.
+ADDITIVE = "additive"
+NON_ADDITIVE = "non_additive"  # a unit price, a rate, a balance: never summed
 
 # Roles whose column takes part in the grain once resolved.
 GRAIN_ROLES = (FOREIGN_KEY, EXTRACTED_KEY)
@@ -62,6 +68,7 @@ class ColumnAssessment:
     dimensionTable: Optional[str] = None # the generated dimension it was extracted to / moved into
     initialRole: Optional[str] = None    # the classifier's role, kept when `role` is overwritten
     roleSource: str = SOURCE_STATISTICS  # who settled `initialRole` (see the SOURCE_* constants)
+    additivity: Optional[str] = None     # NON_ADDITIVE when the caller or the LLM said so; a measure is additive otherwise
 
     def __post_init__(self):
         if self.initialRole is None:

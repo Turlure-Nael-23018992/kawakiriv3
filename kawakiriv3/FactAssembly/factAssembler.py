@@ -27,6 +27,13 @@ Checks, all turned into warnings (the fact then goes to review):
   assembled fact as in its source table -- a gap means source rows that
   reach no row of the grain (orphans), or rows counted twice;
 - every refused item, and every table reached by several equally short paths.
+
+A coarser table joined directly from the anchor, from which the fact copies
+columns, is the anchor's header (an order, a ticket): its content is in the
+fact now. It is no link target for the fact, and the anchor column joining
+it (`commande_id`, `transaction_id`) is the document number, a degenerate
+column -- never a grain key, so a fact at the line grain is told apart by
+its line number within that document (see `GrainVerifier.repeatedWithin`).
 """
 from __future__ import annotations
 
@@ -108,7 +115,10 @@ class AssemblyResult:
     """`tableName`: the assembled table in DuckDB, None when nothing could be
     built (see `error`). `consumedTables`: the anchor and the tables at its
     grain or finer -- their rows are IN the fact, so they are neither link
-    targets nor "finer table" warnings for it."""
+    targets nor "finer table" warnings for it. `headerTables`: the coarser
+    tables joined directly from the anchor that columns were copied from --
+    no link targets either; `documentColumns`: the anchor columns joining
+    them, degenerate."""
 
     name: str
     anchorTable: str
@@ -126,13 +136,19 @@ class AssemblyResult:
     error: Optional[str] = None
     declaredKeys: list = field(default_factory=list)
     declaredMeasures: list = field(default_factory=list)
+    headerTables: list = field(default_factory=list)
+    documentColumns: list = field(default_factory=list)
 
     def columnRoles(self, source=SOURCE_CALLER):
         """The roles the assembly itself settles: every gathered measure and
-        key, plus the anchor's own columns the spec named."""
+        key, plus the anchor's own columns the spec named, and the document
+        columns, degenerate even when the spec named them as keys."""
         measures = [c.name for c in self.columns if c.kind == MEASURE_ITEM] + self.declaredMeasures
         keys = [c.name for c in self.columns if c.kind == KEY_ITEM] + self.declaredKeys
-        return ColumnRoles.fromLists(keys=keys, measures=measures, source=source)
+        return ColumnRoles.fromLists(
+            keys=[k for k in keys if k not in self.documentColumns], measures=measures,
+            degenerate=self.documentColumns, source=source,
+        )
 
 
 def _rank(path):
@@ -189,6 +205,14 @@ class FactAssembler:
             self._addAllocation(measure, path, name, index)
 
         result.sources = [plan for plan, _ in self.plans.values()]
+        copiedFrom = {table for table, _ in self.copiedKeys} | {
+            c.sourceTable for c in result.columns if c.kind == MEASURE_ITEM and c.relation == COARSER
+        }
+        for table, (plan, path) in self.plans.items():
+            if plan.relation == COARSER and len(path) == 1 and table in copiedFrom:
+                result.headerTables.append(table)
+                if path[0].sourceColumn not in result.documentColumns:
+                    result.documentColumns.append(path[0].sourceColumn)
         result.consumedTables = [spec.anchorTable] + [
             plan.table for plan, _ in self.plans.values() if plan.relation in (SAME_GRAIN, FINER)
         ]

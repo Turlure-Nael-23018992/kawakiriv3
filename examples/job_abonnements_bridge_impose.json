@@ -1,0 +1,14 @@
+{
+  "source": {
+    "kind": "csv",
+    "path": "examples/abonnements"
+  },
+  "contextType": "SaaS B2B, facturation par abonnement et usage des fonctionnalites",
+  "businessNeed": "Savoir quelles fonctionnalites sont incluses dans chaque plan.",
+  "factTables": [
+    "plans_fonctionnalites"
+  ],
+  "columnHint": false,
+  "duckDbPath": "output/abonnements_bridge.duckdb",
+  "outputDir": "output/abonnements_bridge"
+}

@@ -1,0 +1,26 @@
+{
+  "source": {
+    "kind": "postgres",
+    "host": "${PG_HOST}",
+    "port": "${PG_PORT}",
+    "user": "${PG_USER}",
+    "password": "${PG_PASSWORD}",
+    "database": "${PG_DATABASE}",
+    "schemas": [
+      "shop",
+      "web_cloud"
+    ]
+  },
+  "tables": {
+    "shop.loyalty_cards": null,
+    "shop.shop_transactions": null,
+    "shop.transaction_lines": null,
+    "web_cloud.web_customers": null,
+    "web_cloud.web_sales": null
+  },
+  "contextType": "commerce omnicanal : ventes en magasin avec cartes de fidelite et ventes web",
+  "businessNeed": "Analyser les ventes (magasin et web) et unifier les clients : un meme client, porteur de carte de fidelite en magasin ou client web, doit etre reconnu comme un seul client sur les deux canaux.",
+  "linkCachePath": "output/postgres_link_verdicts.json",
+  "duckDbPath": "output/postgres.duckdb",
+  "outputDir": "output/postgres"
+}

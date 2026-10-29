@@ -6,15 +6,16 @@
   },
   "tables": {
     "token_usage": null,
-    "users": ["id", "uuid", "is_active", "is_verified", "is_accepted", "is_superuser", "onboarding_completed", "auth_provider", "deleted", "created_at", "updated_at"]
+    "users": ["id", "uuid", "is_active", "is_verified", "is_accepted", "is_superuser", "onboarding_completed", "auth_provider", "deleted", "created_at", "updated_at"],
+    "companies": ["id", "size", "sector", "country", "is_active", "deleted", "created_at", "updated_at"]
   },
   "contextType": "plateforme SaaS d'assistants IA : journal de consommation de tokens LLM par utilisateur et par societe",
-  "businessNeed": "Analyser la consommation de tokens LLM (tokens en entree, en sortie, en cache et de creation de cache) par utilisateur, societe, type d'usage et jour.",
+  "businessNeed": "Analyser la consommation de tokens LLM (tokens en entree, en sortie, en cache et de creation de cache) par utilisateur, societe, type d'usage et jour, avec la taille, le secteur et le pays de la societe.",
   "tableDescriptions": {
     "token_usage": {
       "description": "Une ligne par appel LLM facture : qui l'a fait, pour quel usage, combien de tokens.",
       "columns": {
-        "company_id": "societe cliente a laquelle l'appel est facture",
+        "company_id": "societe cliente a laquelle l'appel est facture (companies.id)",
         "user_id": "utilisateur qui a declenche l'appel (users.id)",
         "type": "type d'usage de l'appel (documentation, ...)",
         "input_tokens": "tokens envoyes au modele",
@@ -26,6 +27,16 @@
     },
     "users": {
       "description": "Comptes utilisateurs de la plateforme."
+    },
+    "companies": {
+      "description": "Societes clientes de la plateforme (comptes B2B).",
+      "columns": {
+        "size": "tranche d'effectif de la societe",
+        "sector": "secteur d'activite",
+        "country": "pays du siege",
+        "is_active": "compte actif",
+        "deleted": "compte supprime (soft delete)"
+      }
     }
   },
   "columnRoles": {

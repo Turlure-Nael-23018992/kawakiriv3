@@ -203,7 +203,8 @@ def testFactHintAdvisorKeepsOnlyKnownColumnsAndForwardsImposedFacts():
 
     assert session.posted["factTables"] == ["f03b11"] and session.posted["classifyColumns"] is True
     assert advisor.lastColumnRolesByTable == {
-        "f03b11": {"reasoning": "r", "keyColumns": ["RPAN8"], "measureColumns": [], "technicalColumns": []},
+        "f03b11": {"reasoning": "r", "keyColumns": ["RPAN8"], "measureColumns": [], "technicalColumns": [],
+                   "nonAdditiveColumns": []},
     }
     assert advisor.rejectedColumnNames == {"f03b11": ["RPXX"]}
     assert advisor.lastColumnRolesErrors == {"autre": "boom"}
@@ -229,3 +230,12 @@ def testAUniqueTimeZoneTimestampIsAnEventDateJoinedToTheCalendar(duck_db):
     calendar = model.dimensions[0]
     assert calendar.rowCount == len({row[0] for row in duck_db.query('SELECT date_key FROM "appels__dim_date"')})
     assert calendar.rowCount < 5
+
+
+def testNonAdditiveColumnsAreMeasuresNeverSummed():
+    roles = ColumnRoles.fromLlm({"measureColumns": ["quantite"], "nonAdditiveColumns": ["prix_unitaire"]})
+
+    assert roles.roleOf("prix_unitaire")[0] == "measure"
+    assert roles.additivity == {"prix_unitaire": "non_additive"}
+    # Declared a key by the caller: no longer a measure, no longer non additive.
+    assert roles.overriddenBy(ColumnRoles.fromLists(keys=["prix_unitaire"])).additivity == {}

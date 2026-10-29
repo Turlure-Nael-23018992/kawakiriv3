@@ -3,7 +3,9 @@ grain, coarser, finer, unreachable), allocation, reconciliation, and the
 assembled fact going through the usual v3 chain."""
 import pytest
 
-from kawakiriv3.FactAnalysis.columnAssessment import FOREIGN_KEY, MEASURE, SOURCE_CALLER, SOURCE_LLM
+from kawakiriv3.FactAnalysis.columnAssessment import (
+    DEGENERATE, EXTRACTED_KEY, FOREIGN_KEY, MEASURE, SOURCE_CALLER, SOURCE_LLM,
+)
 from kawakiriv3.FactAssembly.assemblySpec import AssemblySpec
 from kawakiriv3.FactAssembly.factAssembler import COARSER, FINER, SAME_GRAIN, UNREACHABLE, FactAssembler
 from kawakiriv3.FactAssembly.linkGraph import LinkGraph
@@ -274,10 +276,11 @@ def testImposedAssembledFactRunsTheV3ChainWithoutLlm(ordersDb):
     model = results["models"][0]
     assert results["factTableSource"] == "caller"
     assert model.factTable == "marge" and model.starFactTable == "marge__fact"
-    assert sorted(l.target for l in model.links) == [
-        "clients.client_id", "commandes.commande_id", "produits.produit_code",
-    ]
+    # commandes is the lines' header: no dimension, its number is degenerate.
+    assert sorted(l.target for l in model.links) == ["clients.client_id", "produits.produit_code"]
+    assert model.assembly.headerTables == ["commandes"]
     byName = {a.columnName: a for a in model.assessments}
+    assert byName["commande_id"].role == DEGENERATE
     assert byName["montant_ht"].role == MEASURE and byName["montant_ht"].roleSource == SOURCE_CALLER
     assert byName["ligne_id"].role != FOREIGN_KEY  # never linked back to the tables folded into the fact
     assert not [w for w in model.warnings if "le grain demande est peut-etre" in w]
@@ -365,3 +368,37 @@ def testFactHintAdvisorKeepsValidAssembledFactsAndRejectsTheOthers():
     assert "tables inconnues : ['fantome']" in advisor.rejectedAssembledFacts[0]["error"]
     assert len(advisor.rejectedAssembledFacts) == 2
     assert session.posted["physicalLinks"] == [{"sourceTable": "colis"}]
+
+
+def testAHeaderTableIsFoldedIntoItsLinesFactNotLinked(duck_db):
+    # Ticket lines with their ticket header (card, day, payment): the same
+    # article scanned twice on ticket 1 -- a line grain, not a duplicate.
+    duck_db.loadTables({
+        "tickets": {"transaction_id": [1, 2, 3, 4], "carte": ["C1", "C2", "C1", "C3"],
+                    "date_ticket": ["2024-01-01", "2024-01-01", "2024-01-02", "2024-01-03"],
+                    "paiement": ["cb", "esp", "cb", "cb"]},
+        "lignes": {"line_id": [1, 2, 3, 4, 5, 6, 7, 8], "transaction_id": [1, 1, 1, 2, 3, 3, 4, 4],
+                   "article": ["A", "A", "B", "A", "B", "C", "A", "B"],
+                   "qty": [1.5, 1.5, 2.0, 1.0, 3.0, 1.0, 2.0, 1.0]},
+    })
+    duck_db.conn.execute("ALTER TABLE tickets ALTER date_ticket TYPE DATE")
+    spec = AssemblySpec.model_validate({
+        "name": "ventes", "anchorTable": "lignes", "measures": [{"table": "lignes", "column": "qty"}],
+        "keys": [{"table": "tickets", "column": c} for c in ("carte", "date_ticket", "paiement")],
+    })
+
+    results = KawakiriV3Pipeline(duck_db, factHintAdvisor=_NoCallAdvisor()).run(
+        ["tickets", "lignes"], assembledFacts=[spec],
+    )
+    model = results["models"][0]
+    byName = {a.columnName: a for a in model.assessments}
+
+    assert model.assembly.headerTables == ["tickets"] and model.assembly.documentColumns == ["transaction_id"]
+    assert model.links == []
+    assert byName["transaction_id"].role == DEGENERATE
+    assert (byName["date_ticket"].role, byName["date_ticket"].dimensionTable) == (EXTRACTED_KEY, "ventes__dim_date")
+    assert "transaction_id" not in model.grain.grainColumns
+    assert model.grain.repeatedWithin == "transaction_id"
+    assert model.notes and model.notes[0].startswith("grain a la ligne")
+    assert model.verdict == "ok", model.warnings
+

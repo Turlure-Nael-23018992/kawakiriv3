@@ -56,7 +56,10 @@ def testPipelineAnalysesTheTableTheHintDesignates(sales_db, tmp_path):
     report = reportPath.read_text(encoding="utf-8")
     assert "erDiagram" in report
     # A linked source table is drawn with its key and columns, not as an empty box.
-    assert '    "clients" {\n        numeric client_id PK\n        string nom\n    }' in report
+    # Namespaced by its fact table so the same source table drawn in another
+    # diagram of the same report never shares its entity name (see
+    # report._linkedEntityName).
+    assert '    "ventes.clients" {\n        numeric client_id PK\n        string nom\n    }' in report
 
 
 def testImposedFactTablesSkipTheHint(sales_db):

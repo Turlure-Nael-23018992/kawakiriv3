@@ -4,8 +4,16 @@ warning, and any warning sends the model to human review.
 """
 from __future__ import annotations
 
-from kawakiriv3.FactAnalysis.columnAssessment import MEASURE, ROW_IDENTIFIER
+import re
+
+from kawakiriv3.FactAnalysis.columnAssessment import CONSTANT, EMPTY, MEASURE, ROW_IDENTIFIER
 from kawakiriv3.SourceJoin.sourceJoinEngine import SourceJoinEngine
+
+# A dbt snapshot's own validity window (or any hand-rolled equivalent):
+# present as a FROM/TO pair, it means the table can hold several versions of
+# the same business entity side by side -- see `_scdHistoryNotFiltered`.
+_VALIDITY_WINDOW = re.compile(r"(^|_)valid_(from|to)$", re.IGNORECASE)
+_VALIDITY_TO = re.compile(r"(^|_)valid_to$", re.IGNORECASE)
 
 
 class FactHintCheck:
@@ -21,7 +29,10 @@ class FactHintCheck:
 
     def warnings(self):
         """French, human-readable warnings, in check order."""
-        return [*self._noMeasure(), *self._finerTableReferencesFact(), *self._largerLinkedDimensions()]
+        return [
+            *self._noMeasure(), *self._finerTableReferencesFact(), *self._largerLinkedDimensions(),
+            *self._scdHistoryNotFiltered(),
+        ]
 
     def _rowCount(self, tableName):
         profiler = self.schemaEngine.profilers[tableName]
@@ -72,4 +83,32 @@ class FactHintCheck:
             f"la dimension {link.targetTable} ({self._rowCount(link.targetTable)} lignes) a plus de lignes "
             f"que la table de faits ({factRows}) : role fait/dimension a verifier"
             for link in self.links if self._rowCount(link.targetTable) > factRows
+        ]
+
+    def _scdHistoryNotFiltered(self):
+        """A `*_valid_from`/`*_valid_to` pair (dbt snapshot convention, or a
+        hand-rolled equivalent) means the fact may hold several versions of
+        the same business entity (a plan change, an address update...) side
+        by side. The grain can come out unique anyway -- the versions differ
+        on other columns too -- which hides the problem instead of raising
+        it: a measure summed without filtering to the current version (e.g.
+        `WHERE *_valid_to IS NULL`) is counted once per version. Silenced
+        once every `*_valid_to` has collapsed to a single value (typically
+        all-NULL): that's what a caller's `rowFilters` on it looks like once
+        applied, and with no more than one state left there is nothing left
+        to warn about. This check never knows which column names the
+        entity nor proves duplication otherwise; it only reports that the
+        pattern is present and still varies, same as every other check
+        here."""
+        validityColumns = sorted(a.columnName for a in self.assessments if _VALIDITY_WINDOW.search(a.columnName))
+        if len(validityColumns) < 2:
+            return []
+        validToColumns = [a for a in self.assessments if _VALIDITY_TO.search(a.columnName)]
+        if validToColumns and all(a.role in (EMPTY, CONSTANT) for a in validToColumns):
+            return []
+        return [
+            f"{self.factTable} porte une fenetre de validite technique ({', '.join(validityColumns)}) : "
+            "probablement un snapshot historise. Si la version courante n'est pas filtree a la source (ou via "
+            "rowFilters), une meme entite peut apparaitre en plusieurs lignes et ses mesures etre comptees "
+            "plusieurs fois."
         ]

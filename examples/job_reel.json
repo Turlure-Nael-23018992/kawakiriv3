@@ -1,0 +1,53 @@
+{
+  "source": {
+    "kind": "csv",
+    "path": "examples/reel_clean"
+  },
+  "contextType": "ERP JD Edwards, comptabilite clients (Accounts Receivable), export reel complet",
+  "tableDescriptions": {
+    "output": {
+      "description": "JD Edwards F03B11 - registre clients (Customer Ledger), export reel (168 colonnes) : une ligne par echeance de document client (facture, avoir, ...), historisee par un snapshot dbt (colonnes DBT_*, LOADED_AT, ...).",
+      "columns": {
+        "RPDOC": "Numero de document",
+        "RPDCT": "Type de document (RI facture, RM avoir, ...)",
+        "RPKCO": "Societe du document",
+        "RPSFX": "Numero d'echeance (pay item) du document",
+        "RPAN8": "Numero de tiers client (Address Book)",
+        "RPPA8": "Tiers parent",
+        "RPPYR": "Tiers payeur",
+        "RPDGJ": "Date comptable (GL)",
+        "RPDIVJ": "Date de facture",
+        "RPDDJ": "Date d'echeance",
+        "RPICU": "Numero de lot",
+        "RPICUT": "Type de lot",
+        "RPFY": "Exercice fiscal",
+        "RPPN": "Periode comptable",
+        "RPCO": "Societe",
+        "RPPST": "Statut de paiement",
+        "RPAG": "Montant brut",
+        "RPAAP": "Montant restant du (ouvert)",
+        "RPADSC": "Escompte disponible",
+        "RPADSA": "Escompte pris",
+        "RPATXA": "Montant taxable",
+        "RPATXN": "Montant non taxable",
+        "RPSTAM": "Montant de taxe",
+        "RPCRCD": "Devise de la transaction",
+        "RPBCRC": "Devise de base de la societe",
+        "RPCRR": "Taux de change",
+        "RPACR": "Montant brut en devise",
+        "RPFAP": "Montant ouvert en devise",
+        "RPMCU": "Business unit",
+        "RPTXA1": "Zone / code de taxe",
+        "DBT_SCD_ID": "Identifiant de version dbt (snapshot SCD2)",
+        "DBT_VALID_FROM": "Debut de validite de la version",
+        "DBT_VALID_TO": "Fin de validite de la version"
+      }
+    }
+  },
+  "businessNeed": "Analyser l'encours et les montants factures des creances clients (montant brut, montant ouvert, taxes) par client, societe, type de document, devise, date de facture et date d'echeance.",
+  "factTables": [
+    "output"
+  ],
+  "duckDbPath": "output/reel.duckdb",
+  "outputDir": "output/reel"
+}

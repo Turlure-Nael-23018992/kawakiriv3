@@ -72,9 +72,9 @@ def testTheAssembledFactBuildsTheExpectedStar(margeResults):
 
     assert model.verdict == NEEDS_REVIEW  # only because of the orphan parcels
     assert all(w.startswith("reconciliation de ") for w in model.warnings), model.warnings
-    assert sorted(l.target for l in model.links) == [
-        "clients.client_id", "commandes.commande_id", "produits.produit_code",
-    ]
+    # commandes is the lines' header: its number stays in the fact, degenerate.
+    assert sorted(l.target for l in model.links) == ["clients.client_id", "produits.produit_code"]
+    assert "commande_id" in model.degenerateColumns
     assert sorted(d.tableName for d in model.dimensions) == ["marge_lignes__dim_canal", "marge_lignes__dim_date"]
     assert model.measures == [
         "quantite", "montant_ht", "montant_tva", "prix_unitaire", "taux_remise", "cout_achat",

@@ -31,8 +31,19 @@ Each candidate link gets a decision, in three stages:
 3. **The caller** has the last word: a declared link is always accepted, a
    forbidden one always rejected.
 
-Decimal columns are never sources (measures), and a table never links to
-itself (hierarchies are out of scope).
+Decimal columns are never sources (measures). A table CAN link to itself
+(`factures.facture_origine_id -> factures.facture_id`, an avoir pointing
+back at the invoice it credits), but only when the source column is
+nullable: a real self-reference is almost always optional, while a
+table's own mandatory key components (JD Edwards' RPDOC/RPKCO/RPSFX...)
+never are and would otherwise flood this with coincidental same-table
+noise that doesn't exist between unrelated tables. The same three stages
+then decide it, so a genuine self-reference the LLM is shown has a correct
+candidate to accept instead of being forced to pick among unrelated
+tables. `shortestPaths` still never walks such a link (its depth check
+turns it into a no-op), so a self-link is detected and reported but never
+used to flatten a hierarchy -- true multi-level hierarchies (e.g.
+`employes.manager_id` several levels deep) stay out of scope.
 """
 from __future__ import annotations
 
@@ -156,7 +167,15 @@ class LinkGraph:
         candidatesByColumn = {}
         for candidate in engine.inferSourceJoins(threshold=WEAK_COVERAGE):
             if candidate.sourceTable == candidate.targetTable:
-                continue
+                # A real self-reference (an avoir pointing at the invoice it
+                # credits, a manager pointing at another employee) is almost
+                # always optional: most rows have no such row to point at.
+                # A table's own mandatory key components (JD Edwards'
+                # RPDOC/RPKCO/RPSFX...) are never null and would otherwise
+                # flood this with coincidental same-table noise.
+                profiling = schemaEngine.profilers[candidate.sourceTable].getAggProfiling(candidate.sourceColumn)
+                if profiling.NullCount == 0:
+                    continue
             candidatesByColumn.setdefault((candidate.sourceTable, candidate.sourceColumn), []).append(candidate)
 
         builder = cls([])

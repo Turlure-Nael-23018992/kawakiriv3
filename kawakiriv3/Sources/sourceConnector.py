@@ -1,5 +1,5 @@
 """Common interface every input source implements (CSV, ClickHouse,
-StarRocks, later Postgres, ...).
+StarRocks, PostgreSQL, ...).
 
 The whole v3 pipeline runs on DuckDB: a source's only job is to list what it
 has and copy the requested tables/columns into the run's DuckDB database.
@@ -7,8 +7,11 @@ Nothing downstream of `loadInto` ever talks to the source again.
 """
 from __future__ import annotations
 
+import json
 import re
 from abc import ABC, abstractmethod
+from decimal import Decimal
+from uuid import UUID
 
 _UNSAFE_TABLE_NAME_CHARS = re.compile(r"[^0-9A-Za-z_]+")
 
@@ -43,20 +46,23 @@ class SourceConnector(ABC):
         """Column names of `tableName`, in source order."""
 
     @abstractmethod
-    def fetchDataFrame(self, tableName, columnNames):
+    def fetchDataFrame(self, tableName, columnNames, rowFilter=None):
         """A pandas DataFrame holding `columnNames` of every row of
-        `tableName`."""
+        `tableName` matching `rowFilter` (a SQL boolean expression on the
+        source's own columns, applied by the source itself -- never fetched
+        then filtered in Python)."""
 
-    def loadInto(self, db, tableName, columnNames=None, targetName=None):
-        """Copies `tableName` (only `columnNames` when given) into DuckDB as
-        `targetName` (default `duckDbTableName(tableName)`), replacing any
-        existing table of that name. Returns the DuckDB table name."""
+    def loadInto(self, db, tableName, columnNames=None, targetName=None, rowFilter=None):
+        """Copies `tableName` (only `columnNames` when given, only rows
+        matching `rowFilter` when given) into DuckDB as `targetName`
+        (default `duckDbTableName(tableName)`), replacing any existing table
+        of that name. Returns the DuckDB table name."""
         targetName = targetName or duckDbTableName(tableName)
         columnNames = list(columnNames) if columnNames else self.listColumns(tableName)
         unknown = [c for c in columnNames if c not in self.listColumns(tableName)]
         if unknown:
             raise ValueError(f"{self.kind}: colonnes inconnues dans {tableName!r} : {unknown}")
-        db.loadDataFrame(targetName, self.fetchDataFrame(tableName, columnNames))
+        db.loadDataFrame(targetName, self.fetchDataFrame(tableName, columnNames, rowFilter=rowFilter))
         return targetName
 
     def close(self):
@@ -71,3 +77,22 @@ def selectColumnsSql(columnNames):
 def quoteIdentifier(identifier):
     """Double-quoted SQL identifier (DuckDB / ANSI)."""
     return _quote(identifier)
+
+
+def normalizeObjectColumns(frame):
+    """Turns the Python objects a DB-API driver returns into values DuckDB
+    reads natively: `Decimal` columns (NUMERIC/DECIMAL) into floats, `UUID`
+    into text, `dict`/`list` (JSON, arrays) into JSON text. Nulls are kept.
+    Each column is judged on its first 100 non-null values."""
+    for column in frame.columns:
+        values = frame[column].dropna()
+        if values.empty:
+            continue
+        head = list(values.head(100))
+        if all(isinstance(v, Decimal) for v in head):
+            frame[column] = frame[column].astype(float)
+        elif any(isinstance(v, UUID) for v in head):
+            frame[column] = frame[column].map(lambda v: None if v is None else str(v))
+        elif any(isinstance(v, (dict, list)) for v in head):
+            frame[column] = frame[column].map(lambda v: None if v is None else json.dumps(v, default=str))
+    return frame

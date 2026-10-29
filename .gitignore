@@ -10,3 +10,9 @@ examples/jde_f03b11/raw/
 
 # Donnees reelles (comptes utilisateurs avec emails et hash de mots de passe) : ne jamais versionner
 examples/tokenUsage/
+
+# Donnees reelles (extrait JDE) : ne jamais versionner
+examples/reel/
+
+# Donnees reelles (export JDE nettoye) : ne jamais versionner
+examples/reel_clean/

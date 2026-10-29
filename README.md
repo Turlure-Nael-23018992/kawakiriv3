@@ -207,6 +207,47 @@ classe toujours leurs colonnes. Avec `"columnHint": false`, le run ne fait
 plus aucun appel LLM. Un job qui impose `assembledFacts` seuls ne fait aucun
 appel non plus.
 
+## Unification (post-traitement)
+
+Unifier des clients présents sur deux canaux, ou réunir les ventes de
+plusieurs sources en un seul fait, se fait en deux temps :
+
+1. **l'étoile** : la pipeline construit une étoile par fait, chaque source
+   seule (le fait `<fait>__fact`, ses tables reliées, ses dimensions
+   extraites, son calendrier) ;
+2. **le dédoublonnage sur l'étoile** ([StarUnification/](kawakiriv3/StarUnification/)),
+   seulement si quelque chose le demande : le job (`unification`, appliquée
+   telle quelle), sinon le hint (`unificationRequested`), et alors
+   `POST /propose-unifications` reçoit les étoiles (structure seulement) et
+   décrit l'unification, y compris ce qui en découle (des clients unifiés
+   appellent en général des ventes réunies).
+
+Le temps 2 ne lit que les tables de l'étoile et les rôles qu'elle a
+décidés : aucune nouvelle classification, aucune recherche de liens, aucun
+rôle recalculé. Il ne peut donc pas casser une étoile validée. Il fait :
+
+- **des dimensions unifiées** : l'union des dimensions des étoiles qui
+  décrivent la même entité (`loyalty_cards` et `web_customers`), puis un
+  dédoublonnage sur des identifiants forts (email, téléphone). La table
+  unifiée porte tous les attributs, la présence par source
+  (`present_web`) et la clé de chaque source (`<clé>_web`) ; chaque
+  attribut vient de la fiche prioritaire (date de modification, sinon la
+  source jugée la plus fiable) ;
+- **le remplacement des clés** : dans chaque fait, la clé vers une dimension
+  fondue est remplacée par l'id unifié (`<fait>__fact_unifie`, mêmes lignes,
+  même ordre), via la table de correspondance ;
+- **des faits réunis**, si demandé : l'union des faits, avec la colonne
+  d'origine (le canal). Les rôles, les mesures et les liens sont repris des
+  étoiles ; un produit aligné sans être unifié devient une dimension
+  conforme, les dates un calendrier commun. Le fait réuni remplace les faits
+  d'origine dans le modèle final.
+
+Le temps 2 reprend l'étoile telle quelle, défauts compris : on corrige
+l'étoile, pas l'unification. Le détail est dans [PIPELINE.md](PIPELINE.md)
+§7bis.
+Les problèmes constatés et les correctifs à faire sont dans
+[PROBLEMES.md](PROBLEMES.md).
+
 ## Sources
 
 Le module [Sources/](kawakiriv3/Sources/) définit une interface commune,
@@ -218,8 +259,19 @@ et `loadInto`. Tout le pipeline tourne ensuite sur DuckDB.
 | `csv` | `CsvSource` : `read_csv` natif de DuckDB, une table par fichier | `path` (dossier ou fichier), `delimiter`, `header`, `encoding` |
 | `clickhouse` | `ClickHouseSource` (`clickhouse-connect`) | `database`, `host`, `port`, `user`, `password`, `secure`, `rowLimit` |
 | `starrocks` | `StarRocksSource` (protocole MySQL, `PyMySQL`) | `database`, `host`, `port` (9030, le port de requête du FE), `user`, `password`, `catalog` (catalogue externe : Hive, Iceberg, JDBC…), `rowLimit` |
+| `postgres` | `PostgresSource` (`psycopg` 3, session en lecture seule) | `database`, `schemas` (liste, `["public"]` par défaut ; avec plusieurs schémas les tables se nomment `schema.table`, chargées dans DuckDB sous leur nom nu), `host`, `port` (5432), `user`, `password`, `sslmode`, `rowLimit` |
 
-Pour ajouter Postgres : une sous-classe de `SourceConnector`,
+Ce qui ne doit pas être versionné avec le job (hôte, identifiants d'une
+source distante) s'écrit `${VAR}` dans le bloc `source` : la valeur est lue
+dans l'environnement, sinon dans `kawakiriv3/.env` (voir `.env.example`). Une
+variable définie nulle part arrête le run avant toute connexion.
+
+```json
+"source": {"kind": "starrocks", "host": "${STARROCKS_HOST}", "port": "${STARROCKS_PORT}",
+           "user": "${STARROCKS_USER}", "password": "${STARROCKS_PASSWORD}", "database": "ventes"}
+```
+
+Pour ajouter une source : une sous-classe de `SourceConnector`,
 enregistrée dans `_SOURCE_KINDS` ([Sources/__init__.py](kawakiriv3/Sources/__init__.py)).
 
 ## Lancer
@@ -227,7 +279,7 @@ enregistrée dans `_SOURCE_KINDS` ([Sources/__init__.py](kawakiriv3/Sources/__in
 ```bash
 pip install -r requirements.txt          # Python >= 3.10
 # service du hint (sauf si le job impose "factTables")
-cd ../kawakiri-langgraph && uvicorn langgraph_advisor.service:app --port 8000
+cd ../kawakiri-langgraph && uvicorn langgraph_advisor.service:app --port 8001
 cd ../kawakiriv3 && python run_v3.py examples/job_csv_ventes.json
 pytest
 ```
@@ -261,8 +313,12 @@ indépendamment.
   colonnes (`columnRoles`).
 - **Historique SCD** : un snapshot dbt contient plusieurs versions d'une
   même ligne (9 documents en deux versions dans l'extrait JDE). Si le grain
-  les distingue, leurs montants comptent deux fois. Il faudrait filtrer la
-  version courante à la source.
+  les distingue, leurs montants comptent deux fois. `factHintCheck.py`
+  détecte la paire technique `*_valid_from`/`*_valid_to` encore variable et
+  avertit (`needs_review`), et le job peut filtrer la version courante à la
+  source via `rowFilters` -- mais la chaîne ne le fait jamais elle-même,
+  c'est au caller de le déclarer. Voir le dataset
+  [abonnements](examples/abonnements/README.md).
 - **Junk dimension** : chaque petit attribut isolé (un `canal`, un booléen)
   devient sa propre dimension, au lieu d'être regroupé.
 - **Dépendances fonctionnelles fortuites** : une dépendance peut être vraie

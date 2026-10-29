@@ -1,0 +1,113 @@
+{
+  "source": {
+    "kind": "csv",
+    "path": "examples/omnicanal"
+  },
+  "contextType": "enseigne de decoration, ventes en ligne et en boutique, deux systemes clients et deux catalogues",
+  "businessNeed": "Analyser le chiffre d'affaires et les quantites vendues tous canaux confondus, par client unique, par produit unique, par canal et par jour : un client ou un produit present sur les deux canaux ne doit compter qu'une fois.",
+  "unification": {
+    "dimensions": [
+      {
+        "name": "clients_unifies",
+        "idColumn": "client_unifie_id",
+        "sources": [
+          {
+            "dimension": "clients_web",
+            "label": "web",
+            "columnMapping": {
+              "client_ref": "client_id",
+              "nom": "nom",
+              "email": "email",
+              "telephone": "telephone"
+            }
+          },
+          {
+            "dimension": "clients_magasin",
+            "label": "boutique",
+            "columnMapping": {
+              "client_ref": "code_client",
+              "nom": "nom_client",
+              "email": "mail",
+              "telephone": "tel"
+            }
+          }
+        ],
+        "matchColumns": [
+          "email",
+          "telephone"
+        ],
+        "sourcePriority": [
+          "web",
+          "boutique"
+        ],
+        "justification": "un client present sur les deux canaux ne doit compter qu'une fois"
+      },
+      {
+        "name": "produits_unifies",
+        "idColumn": "produit_unifie_id",
+        "sources": [
+          {
+            "dimension": "produits_web",
+            "label": "web",
+            "columnMapping": {
+              "produit_ref": "sku",
+              "libelle": "libelle",
+              "categorie": "categorie",
+              "ean": "ean"
+            }
+          },
+          {
+            "dimension": "articles_boutique",
+            "label": "boutique",
+            "columnMapping": {
+              "produit_ref": "code_article",
+              "libelle": "designation",
+              "categorie": "rayon",
+              "ean": "ean13"
+            }
+          }
+        ],
+        "matchColumns": [
+          "ean"
+        ],
+        "justification": "un produit present dans les deux catalogues, reconnu par son EAN, ne doit compter qu'une fois"
+      }
+    ],
+    "facts": [
+      {
+        "name": "ventes_unifiees",
+        "labelColumn": "canal",
+        "sources": [
+          {
+            "fact": "ventes_web",
+            "label": "web",
+            "columnMapping": {
+              "vente_ref": "vente_id",
+              "date_vente": "date_vente",
+              "quantite": "quantite",
+              "montant": "montant"
+            }
+          },
+          {
+            "fact": "ventes_boutique",
+            "label": "boutique",
+            "columnMapping": {
+              "vente_ref": "ticket_id",
+              "date_vente": "date_ticket",
+              "quantite": "quantite",
+              "montant": "montant_ttc"
+            }
+          }
+        ],
+        "justification": "les clients et les produits etant unifies, les ventes des deux canaux sont reunies"
+      }
+    ]
+  },
+  "factTables": [
+    "ventes_web",
+    "ventes_boutique"
+  ],
+  "columnHint": false,
+  "duckDbPath": "output/omnicanal.duckdb",
+  "outputDir": "output/omnicanal_impose"
+}

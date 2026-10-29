@@ -1,0 +1,11 @@
+{
+  "source": {
+    "kind": "csv",
+    "path": "examples/abonnements"
+  },
+  "contextType": "SaaS B2B, facturation par abonnement et usage des fonctionnalites",
+  "businessNeed": "Analyser le revenu recurrent mensuel (MRR) par client et par plan, la facturation (factures et avoirs), et l'usage des fonctionnalites par client.",
+  "linkCachePath": "output/abonnements_link_verdicts.json",
+  "duckDbPath": "output/abonnements.duckdb",
+  "outputDir": "output/abonnements"
+}

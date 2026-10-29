@@ -1,10 +1,10 @@
 {
   "source": {
     "kind": "starrocks",
-    "host": "localhost",
-    "port": 9030,
-    "user": "root",
-    "password": "",
+    "host": "${STARROCKS_HOST}",
+    "port": "${STARROCKS_PORT}",
+    "user": "${STARROCKS_USER}",
+    "password": "${STARROCKS_PASSWORD}",
     "database": "ventes"
   },
   "businessNeed": "Analyser le chiffre d'affaires par client et par produit.",

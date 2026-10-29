@@ -1,0 +1,7 @@
+societe_id,raison_sociale,pays,devise_base
+1,Kawa Industries FR,France,EUR
+2,Kawa Industries DE,Allemagne,EUR
+3,Kawa Industries UK,Royaume-Uni,GBP
+4,Kawa Industries US,Etats-Unis,USD
+5,Kawa Industries CH,Suisse,CHF
+6,Kawa Industries JP,Japon,JPY

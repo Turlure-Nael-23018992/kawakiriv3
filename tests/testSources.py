@@ -1,9 +1,11 @@
 from decimal import Decimal
+from uuid import UUID
 
 import pandas as pd
 import pytest
 
-from kawakiriv3.Sources import ClickHouseSource, CsvSource, StarRocksSource, buildSource, duckDbTableName
+from kawakiriv3 import envConfig
+from kawakiriv3.Sources import ClickHouseSource, CsvSource, PostgresSource, StarRocksSource, _SOURCE_KINDS, buildSource, duckDbTableName
 
 
 def _writeCsvDir(tmp_path):
@@ -149,3 +151,99 @@ def testBuildSourceDispatchesOnKind(tmp_path):
     assert isinstance(buildSource({"kind": "csv", "path": str(tmp_path)}), CsvSource)
     with pytest.raises(ValueError, match="source inconnue"):
         buildSource({"kind": "oracle"})
+
+
+def testBuildSourceResolvesPlaceholdersFromTheEnvironmentThenTheEnvFile(tmp_path, monkeypatch):
+    envPath = tmp_path / ".env"
+    envPath.write_text("# StarRocks\nSR_USER=lecteur\nSR_PASSWORD=\"s3cret\"\n", encoding="utf-8")
+    monkeypatch.setattr(envConfig, "ENV_PATH", envPath)
+    monkeypatch.setenv("SR_USER", "admin")
+    monkeypatch.delenv("SR_PASSWORD", raising=False)
+    captured = {}
+    monkeypatch.setitem(_SOURCE_KINDS, "fake", lambda **kwargs: captured.update(kwargs))
+
+    buildSource({"kind": "fake", "user": "${SR_USER}", "password": "${SR_PASSWORD}", "url": "mysql://${SR_USER}@h"})
+
+    assert captured == {"user": "admin", "password": "s3cret", "url": "mysql://admin@h"}
+
+
+def testBuildSourceNamesEveryUndefinedVariable(tmp_path, monkeypatch):
+    monkeypatch.setattr(envConfig, "ENV_PATH", tmp_path / ".env")
+    monkeypatch.delenv("SR_HOST", raising=False)
+    monkeypatch.delenv("SR_PASSWORD", raising=False)
+
+    with pytest.raises(ValueError, match=r"\['SR_HOST', 'SR_PASSWORD'\]"):
+        buildSource({"kind": "starrocks", "host": "${SR_HOST}", "password": "${SR_PASSWORD}", "database": "ventes"})
+
+
+class _FakePgCursor:
+    def __init__(self, connection, name=None):
+        self.connection = connection
+        self.name = name
+        self.pending = []
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc):
+        return False
+
+    def execute(self, sql, params=None):
+        self.connection.queries.append((sql, params, self.name))
+        if "pg_class" in sql and "pg_attribute" not in sql:
+            self.pending = [("web_cloud", "web_sales"), ("magasin", "loyalty_cards"), ("web_cloud", "web_customers")]
+        elif "pg_attribute" in sql:
+            self.pending = [("sale_id",), ("amount",), ("customer_uuid",), ("extra",)]
+        else:
+            self.pending = [
+                (1, Decimal("10.50"), UUID("12345678-1234-5678-1234-567812345678"), {"canal": "web"}),
+                (2, None, None, None),
+            ]
+
+    def fetchall(self):
+        rows, self.pending = self.pending, []
+        return rows
+
+    def fetchmany(self, size):
+        rows, self.pending = self.pending[:size], self.pending[size:]
+        return rows
+
+
+class _FakePgConnection:
+    def __init__(self):
+        self.queries = []
+        self.rolledBack = 0
+
+    def cursor(self, name=None):
+        return _FakePgCursor(self, name)
+
+    def rollback(self):
+        self.rolledBack += 1
+
+    def close(self):
+        pass
+
+
+def testPostgresSourceSpansSeveralSchemasAndLoadsUnderTheBareTableName(duck_db):
+    connection = _FakePgConnection()
+    source = PostgresSource(database="shop", schemas=["magasin", "web_cloud"], connection=connection, rowLimit=10)
+
+    assert source.listTables() == ["magasin.loyalty_cards", "web_cloud.web_customers", "web_cloud.web_sales"]
+    tableName = source.loadInto(duck_db, "web_cloud.web_sales")
+
+    assert tableName == "web_sales"
+    sql, _, cursorName = connection.queries[-1]
+    assert sql == 'SELECT "sale_id", "amount", "customer_uuid", "extra" FROM "web_cloud"."web_sales" LIMIT 10'
+    assert cursorName is not None and connection.rolledBack == 1
+    # NUMERIC -> number, UUID -> text, JSON -> text; nulls kept.
+    assert duck_db.query('SELECT SUM(amount), COUNT(amount), MAX(customer_uuid), MAX(extra) FROM "web_sales"') == [
+        (10.5, 1, "12345678-1234-5678-1234-567812345678", '{"canal": "web"}')
+    ]
+
+
+def testPostgresSourceResolvesABareNameAndRejectsAnUnknownOne():
+    source = PostgresSource(database="shop", schemas=["magasin", "web_cloud"], connection=_FakePgConnection())
+
+    assert source._resolve("loyalty_cards") == ("magasin", "loyalty_cards")
+    with pytest.raises(ValueError, match="table inconnue"):
+        source._resolve("produits")

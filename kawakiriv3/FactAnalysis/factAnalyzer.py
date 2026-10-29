@@ -10,7 +10,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from typing import Optional
 
-from kawakiriv3.FactAnalysis.columnAssessment import DEGENERATE, FOREIGN_KEY, MEASURE, TECHNICAL
+from kawakiriv3.FactAnalysis.columnAssessment import DEGENERATE, FOREIGN_KEY, MEASURE, NON_ADDITIVE, TECHNICAL
 from kawakiriv3.FactAnalysis.columnClassifier import ColumnClassifier
 from kawakiriv3.FactAnalysis.dimensionExtractor import DimensionExtractor
 from kawakiriv3.FactAnalysis.factHintCheck import FactHintCheck
@@ -34,6 +34,14 @@ class FactModel:
         unique) or `rejected` (no dimension key at all).
     assembly: the `AssemblyResult` the fact was built from, when no source
         table held it as is (see `FactAssembly/factAssembler.py`).
+    remappedKeys: the `RemappedKey`s of its keys remapped to unified
+        dimensions by the post-processing (see `StarUnification/keyRemapper.py`);
+        `starFactTable` is then the remapped copy `<fact>__fact_unifie`.
+    gatheredFacts: the facts this one gathers, when the post-processing
+        built it as a union of the facts of several stars (see
+        `StarUnification/factGatherer.py`).
+    notes: information worth reading that is no reason for a review (a
+        grain at the line level, see `GrainVerdict.repeatedWithin`).
     """
 
     factTable: str
@@ -47,10 +55,18 @@ class FactModel:
     verdict: str = OK
     columnRolesReasoning: Optional[str] = None
     assembly: Optional[object] = None
+    remappedKeys: list = field(default_factory=list)
+    gatheredFacts: list = field(default_factory=list)
+    notes: list = field(default_factory=list)
 
     @property
     def measures(self):
         return [a.columnName for a in self.assessments if a.role == MEASURE]
+
+    @property
+    def nonAdditiveMeasures(self):
+        """Measures never to be summed (a unit price, a rate)."""
+        return [a.columnName for a in self.assessments if a.role == MEASURE and a.additivity == NON_ADDITIVE]
 
     @property
     def degenerateColumns(self):
@@ -91,9 +107,10 @@ class FactAnalyzer:
         profiler = self.schemaEngine.profilers[self.factTable]
         assessments = ColumnClassifier(profiler, self.columnRoles).classify()
         consumed = self.assembly.consumedTables if self.assembly else []
+        headers = self.assembly.headerTables if self.assembly else []
         linkTargets = self.linkTargets
-        if linkTargets is None and consumed:
-            linkTargets = [t for t in self.schemaEngine.tableNames if t not in consumed]
+        if linkTargets is None and (consumed or headers):
+            linkTargets = [t for t in self.schemaEngine.tableNames if t not in consumed and t not in headers]
         links = FactLinker(
             self.schemaEngine, self.primaryKeyCandidatesByTable, self.factTable, assessments, targetTables=linkTargets,
             linkVerdicts=self.linkVerdicts,
@@ -113,26 +130,51 @@ class FactAnalyzer:
                     f"{link.sourceColumn} : lien ambigu, {link.target} retenu parmi "
                     f"{', '.join(link.alternatives)}"
                 )
-        if grain.grainColumns and not grain.isUnique:
-            warnings.append(self._grainWarning(grain))
-
         model = FactModel(
             factTable=self.factTable, starFactTable=starFactTable, hint=self.hint, assessments=assessments,
             links=links, dimensions=dimensions, grain=grain, warnings=warnings,
             columnRolesReasoning=self.columnRoles.reasoning if self.columnRoles else None, assembly=self.assembly,
         )
-        if not grain.grainColumns:
-            model.verdict = REJECTED
-            model.warnings.append(f"{self.factTable} : aucune cle de dimension trouvee, pas de grain")
-        elif warnings:
-            model.verdict = NEEDS_REVIEW
-        return model
+        return withGrainVerdict(model, grain)
 
-    def _grainWarning(self, grain):
-        text = (
-            f"grain ({', '.join(grain.grainColumns)}) non unique sur {grain.totalRows} lignes : "
-            f"{grain.duplicateRows} ligne(s) en doublon"
-        )
-        if grain.completingColumns:
-            text += f" ; unique en ajoutant la dimension degeneree {grain.completingColumns[0]}"
-        return text
+
+def withGrainVerdict(model, grain):
+    """`model` with `grain`, its notes and its verdict: a grain at the line
+    level is a note, any other duplicate a warning; no grain at all rejects
+    the fact, any warning sends it to review. Shared with the
+    post-processing, which rebuilds facts without analysing them again."""
+    notes, warnings = _grainMessages(grain, model.factTable)
+    model.grain = grain
+    model.notes += notes
+    model.warnings += warnings
+    if not grain.grainColumns:
+        model.verdict = REJECTED
+    else:
+        model.verdict = NEEDS_REVIEW if model.warnings else OK
+    return model
+
+
+def nonGrainWarnings(model):
+    """The warnings of `model` that don't come from its grain."""
+    grainWarnings = _grainMessages(model.grain, model.factTable)[1]
+    return [w for w in model.warnings if w not in grainWarnings]
+
+
+def _grainMessages(grain, factTable):
+    """`(notes, warnings)` the grain verdict gives."""
+    if not grain.grainColumns:
+        return [], [f"{factTable} : aucune cle de dimension trouvee, pas de grain"]
+    if grain.isUnique:
+        return [], []
+    if grain.repeatedWithin:
+        return [
+            f"grain a la ligne : {grain.duplicateRows} ligne(s) repetent les memes cles dans un meme "
+            f"{grain.repeatedWithin}, distinguees par {grain.completingColumns[0]}"
+        ], []
+    text = (
+        f"grain ({', '.join(grain.grainColumns)}) non unique sur {grain.totalRows} lignes : "
+        f"{grain.duplicateRows} ligne(s) en doublon"
+    )
+    if grain.completingColumns:
+        text += f" ; unique en ajoutant la dimension degeneree {grain.completingColumns[0]}"
+    return [], [text]
